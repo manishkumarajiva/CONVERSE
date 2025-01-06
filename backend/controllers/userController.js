@@ -33,7 +33,7 @@ const Registeration = asyncHandler(async (req, res) => {
 // @ Access         Public
 const Login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body)
+
     if(!email || !password){
         throw new Error("Invalid Credentials 🔴");
     }
