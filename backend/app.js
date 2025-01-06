@@ -5,6 +5,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
 const indexRoutes = require('./routes/index.js');
+const notFound = require('./middlewares/notFound.js');
+const errorHandler = require('./middlewares/errorHandler.js');
 
 const app = express();
 

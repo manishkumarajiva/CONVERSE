@@ -22,4 +22,7 @@ const protect = asyncHandler( async (req, res, next) => {
         res.status(400)
         throw new Error('Invalid Headers Authorization 🧑‍🦰');
     }
-})
+});
+
+
+module.exports = protect;

@@ -2,9 +2,9 @@ const UserModel = require('../models/userModel.js');
 const asyncHandler = require('express-async-handler');
 const accessToken = require('../utils/accessToken.js');
 
-//@ Description   New User Registeration
-//@ Access        Public
 
+// @ Description   New User Registeration
+// @ Access        Public
 const Registeration = asyncHandler(async (req, res) => {
     const {name, email, password, avatar} = req.body;
 
@@ -29,6 +29,8 @@ const Registeration = asyncHandler(async (req, res) => {
 });
 
 
+// @ Description    Login User
+// @ Access         Public
 const Login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body)
@@ -47,7 +49,8 @@ const Login = asyncHandler(async (req, res) => {
 });
 
 
-
+// @ Description        Fetch All Users
+// @ Access             Private
 const GetAllUsers = asyncHandler(async (req, res) => {
     const search = req.query.search;
     const pattern = new RegExp(search)
