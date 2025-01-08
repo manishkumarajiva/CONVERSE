@@ -184,4 +184,4 @@ const RemoveFromGroup = asyncHandler(async (req, res) => {
       }
   });
 
-module.exports = { AccessChat, FetchUserChats, CreateGroupChat, RenameGroup, AddToGroup };
+module.exports = { AccessChat, FetchUserChats, CreateGroupChat, RenameGroup, AddToGroup, RemoveFromGroup };
