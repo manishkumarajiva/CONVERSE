@@ -1,30 +1,49 @@
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import { Form, FormControl, Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-function SlideDrawer() {
-  const [show, setShow] = useState(false);
+function SideDrawer({show, drawerHandler}) {
+  const [search, setSearch] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingChat, setLoadingChat] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const navigate = useNavigate();
+
+  const searchInputHandler = (e) => {
+    setSearch(e.target.value);
+  }
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    if(!search){
+      toast.warning('Please enter something')
+    }
+  }
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch
-      </Button>
-
-      <Offcanvas show={show} onHide={handleClose}>
+      <Offcanvas show={show} onHide={drawerHandler}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title> Chats </Offcanvas.Title>
+          <Offcanvas.Title> Search Users</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
+        <Offcanvas.Body> 
+          <Form onSubmit={searchHandler} className='d-flex'>
+          <FormControl
+            type="text"
+            name='search'
+            value={search}
+            onChange={searchInputHandler}
+            placeholder="search users"
+            style={{ width: "300px" }}
+            className="rounded-pill border border-primary shadow-none me-2 "
+          />
+          <Button type='submit' className='rounded-circle border-0 p-2 bg-info'> GO </Button>
+          </Form>
         </Offcanvas.Body>
       </Offcanvas>
-    </>
   );
 }
 
-export default SlideDrawer;
+export default SideDrawer;

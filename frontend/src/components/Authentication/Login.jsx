@@ -80,8 +80,6 @@ const Login = () => {
             />
             <InputGroup.Text onClick={showHandler} id="basic-addon1"> {show ? 'Hide' : 'Show'} </InputGroup.Text>
             </InputGroup>
-           
-            <Form.Text> </Form.Text>
           </Form.Group>
         </Container>
 
