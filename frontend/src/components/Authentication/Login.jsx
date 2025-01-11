@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { Button, Container, Form, InputGroup } from "react-bootstrap";
+import Loader from "../Loader/Loader";
+import { toast } from "react-toastify";
+import { LoginHandeler } from "./AuthAPI";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
-  
+
+  const navigate = useNavigate();
   const initialState = { email: "", password: "" };
   const [formData, setFormData] = useState(initialState);
   const [show, setShow] = useState(false);
+  const [isLogin, setLogin] = useState(false);
+
 
   const showHandler = (e) => {
     e.preventDefault();
@@ -19,6 +27,15 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setLogin(true);
+
+    (async () => {
+      const response = await LoginHandeler(formData);
+      toast.success('Login Successfully');
+      setLogin(false);
+      localStorage.setItem('auth', response.authToken)
+      navigate('/chat')
+    })()
     console.log(formData);
   };
 
@@ -70,8 +87,8 @@ const Login = () => {
 
         <Container fluid className="d-grid gap-2">
           <Button type="submit" variant="primary">
-            {" "}
-            LOGIN{" "}
+            LOGIN
+            {isLogin && <Loader></Loader>}
           </Button>
           <Button onClick={gustUserHandler} type="button" variant="danger">
             {" "}

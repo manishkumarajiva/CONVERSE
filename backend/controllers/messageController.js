@@ -40,7 +40,7 @@ const SendMessage = asyncHandler(async (req, res) => {
 // @ Description    Get All Message
 // @ Access         Private
 
-const AllMessages = asyncHandler(async (req, req) => {
+const AllMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
   try {

@@ -17,7 +17,7 @@ const AuthContainer = () => {
         <Col
           onClick={swapHandler}
           className={`p-2 text-center rounded-pill ${
-            swap ? "bg-light text-dark" : "bg-transparent text-white"
+            swap ? "bg-light text-dark" : "bg-transparent text-white fw-bold"
           }`}
         >
           Login
@@ -26,7 +26,7 @@ const AuthContainer = () => {
         <Col
           onClick={swapHandler}
           className={`p-2 text-center rounded-pill ${
-            swap ? "bg-transparent text-white" : "bg-light text-dark"
+            swap ? "bg-transparent text-white fw-bold" : "bg-light text-dark"
           }`}
         >
           Register
