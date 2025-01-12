@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Login from '../components/Authentication/Login';
-import Register from '../components/Authentication/Register';
+import Login from '../components/auth/Login';
+import Register from '../components/auth/Register';
 import { Container, Row, Col } from "react-bootstrap";
 
 
 const Home = () => {
   const navigate = useNavigate();
-  const [swap, setSwap] = useState(false);
+  const [swap, setSwap] = useState(true);
 
   const swapHandler = (e) => {
     setSwap(!swap);
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) navigate("/chat");
+    const token = localStorage.getItem("auth");
+    if (token?.length) navigate("/chat");
   }, [navigate]);
 
   return (

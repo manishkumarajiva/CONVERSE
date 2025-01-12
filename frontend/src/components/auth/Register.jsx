@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Form, InputGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
-import Loader from '../Loader/Loader';
+import Loader from '../../loader/Loader';
 import { RegisterHandeler } from "./AuthAPI";
 import { useNavigate } from 'react-router-dom'
 
@@ -75,7 +75,7 @@ const Register = () => {
         const response = await RegisterHandeler(registerUser);
         toast.success('Register Successfully');
         setSubmitting(false);
-        localStorage.setItem('auth',response.authToken)
+        localStorage.setItem('user',response)
         navigate('/chat');
       })()
     }

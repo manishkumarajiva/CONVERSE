@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import {
   Container,
-  FormControl,
   Navbar,
   Dropdown,
   Image,
+  Button,
 } from "react-bootstrap";
+import "./XCSS.css";
 
 import SideDrawer from "./SlideDrawer";
 import ProfileModel from "./ProfileModel";
@@ -25,23 +26,26 @@ const NavBar = () => {
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem('authToken');
-    navigate('/');
-  }
+    localStorage.removeItem("auth");
+    navigate("/");
+  };
 
   return (
     <Navbar expand="lg" className="bg-light shadow-lg">
       <SideDrawer show={show} drawerHandler={sideDrawerHandler}></SideDrawer>
-      <ProfileModel show={profileModel} showHandler={profileModelHandler}></ProfileModel>
+      <ProfileModel
+        show={profileModel}
+        showHandler={profileModelHandler}
+      ></ProfileModel>
       <Container className="p-0 d-flex justify-content-between" fluid>
         <Container fluid>
-          <FormControl
-            type="text"
-            value="Search Users"
+          <Button
             onClick={sideDrawerHandler}
             style={{ width: "300px" }}
             className="shadow-none rounded-pill bg-info disable text-center text-light fw-bold"
-          />
+          >
+            Search Users &#128269;
+          </Button>
         </Container>
 
         <Container className="d-flex justify-content-between">
@@ -67,7 +71,9 @@ const NavBar = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={profileModelHandler}>My Profile</Dropdown.Item>
+                <Dropdown.Item onClick={profileModelHandler}>
+                  My Profile
+                </Dropdown.Item>
                 <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

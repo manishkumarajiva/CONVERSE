@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Container, Form, InputGroup } from "react-bootstrap";
-import Loader from "../Loader/Loader";
+import Loader from "../../loader/Loader";
 import { toast } from "react-toastify";
 import { LoginHandeler } from "./AuthAPI";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +33,7 @@ const Login = () => {
       const response = await LoginHandeler(formData);
       toast.success('Login Successfully');
       setLogin(false);
-      localStorage.setItem('auth', response.authToken)
+      localStorage.setItem('userInfo', response)
       navigate('/chat')
     })()
     console.log(formData);

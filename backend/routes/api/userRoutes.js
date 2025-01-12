@@ -8,7 +8,7 @@ const protect = require('../../middlewares/protect.js');
 
 router.post('/register',upload.single('avatar'), Registeration);
 router.post('/login', Login);
-router.get('/GetAll', protect, GetAllUsers);
+router.get('/', protect, GetAllUsers);
 
 
 module.exports = router;

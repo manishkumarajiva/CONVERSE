@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const URI = "http://localhost:8000/api";
+import { URI } from '../../constant.js';
 
 const RegisterHandeler = async (body) => {
   const headers = {

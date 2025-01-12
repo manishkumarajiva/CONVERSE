@@ -4,7 +4,6 @@ const UserModel = require('../models/userModel.js');
 
 
 const protect = asyncHandler( async (req, res, next) => {
-
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
 
         const token = req.headers.authorization.replace('Bearer ','');

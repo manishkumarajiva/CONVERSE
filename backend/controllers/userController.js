@@ -51,7 +51,7 @@ const Login = asyncHandler(async (req, res) => {
   if (user && (await user.comparePassword(password))) {
     res
       .status(200)
-      .json({ status: 200, data: user, auth: await accessToken(user) });
+      .json({ status: 200, data: user, authToken: await accessToken(user) });
   } else {
     throw new Error("Invalid Credentials 🔴");
   }
@@ -70,12 +70,12 @@ const GetAllUsers = asyncHandler(async (req, res) => {
     : {};
 
   const user = await UserModel.find(keyword).find({
-    _id: { $ne: req.user.id },
-  });
+    _id: { $ne: req.user },
+  }).select("-password");
 
   if (!user) throw new Error("Empty Users 🤦‍♂️");
 
-  res.status(200).json({ status: 200, data: users });
+  res.status(200).json({ status: 200, data: user });
 });
 
 module.exports = { Registeration, Login, GetAllUsers };

@@ -6,8 +6,8 @@ const protect = require('../../middlewares/protect.js');
 
 // ------------- CHAT AND GROUP ROUTES --------------- //
 
-router.post('/create', protect, AccessChat);
-router.get('/fetch', protect, FetchUserChats);
+router.post('/', protect, AccessChat);
+router.get('/', protect, FetchUserChats);
 router.post('/group', protect, CreateGroupChat);
 router.patch('/renamegroup', protect, RenameGroup);
 router.put('/addtogroup', protect, AddToGroup);
