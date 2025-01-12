@@ -1,22 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 
-function GroupChatModel() {
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+function GroupChatModel({show, handleShow}) {
   return (
     <React.Fragment>
 
-      <Button variant="primary" onClick={handleShow}>
-        ADD Group Chat
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleShow}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
@@ -42,10 +34,10 @@ function GroupChatModel() {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleShow}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleShow}>
             Save Changes
           </Button>
         </Modal.Footer>

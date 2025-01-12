@@ -7,6 +7,7 @@ import { FetchAllChats, AccessChats } from './APIs';
 import { ChatState } from '../context/ChatProvider';
 import logo from '../assests/converse.png';
 import UserList from '../components/user/UserList';
+import Loader from '../loader/Loader';
 import "./XCSS.css";
 
 
@@ -16,7 +17,7 @@ function SideDrawer({show, drawerHandler}) {
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const { user, chats, setChats, selectedChat, setSelectedChat} = ChatState();
+  const {chats, setChats, selectedChat, setSelectedChat} = ChatState();
 
   const searchInputHandler = (e) => {
     setSearch(e.target.value);
@@ -24,13 +25,14 @@ function SideDrawer({show, drawerHandler}) {
 
   const searchChatHandler = (e) => {
     e.preventDefault();
+
     if(!search){
       toast.warning('Please enter something');
       return;
     }
 
     try {
-      setLoading(true); //loading
+      setLoading(true);
       const searchChat = async () => {
         const response = await FetchAllChats(search);
         (response) ? setSearchResult(response.data) : setSearchResult([]);
@@ -42,7 +44,6 @@ function SideDrawer({show, drawerHandler}) {
       toast.error('Failed To Load');
       console.log("FAILED TO LOAD SEARCH :: ", error.message)
     }
-
   }
 
 
@@ -52,14 +53,16 @@ function SideDrawer({show, drawerHandler}) {
 
       const accessChats = async() => {
         const response = await AccessChats(userId);
-
+        console.log(Array.isArray(chats),'ppp')
         if(!chats.find(chat => chat._id === response._id)) setChats([response, ...chats]);
         setSelectedChat(response);
         setLoadingChat(false);
+        drawerHandler();
       }
       accessChats();
     } catch (error) {
-      
+      toast.error('Failed Access Chat');
+      console.error("ACCESS CHAT : ", error.message);
     }
   }
 
@@ -67,7 +70,7 @@ function SideDrawer({show, drawerHandler}) {
       <Offcanvas show={show} onHide={drawerHandler} style={{width:'500px'}}>
         <Offcanvas.Header className='d-flex justify-content-between'>
             <Image className='w-75' src={logo}/> 
-            <span onClick={drawerHandler} id='close' role='button' tabindex='0' className='px-2 text-center fw-bold fs-5 text-dark border border-5 border-start-0 border-end-0 border-danger rounded-pill'> &#10005; </span>
+            <span onClick={drawerHandler} id='close' role='button' tabIndex='0' className='px-2 text-center fw-bold fs-5 text-dark border border-5 border-start-0 border-end-0 border-info rounded-pill'> &#10005; </span>
         </Offcanvas.Header>
         <Offcanvas.Body> 
           <Form onSubmit={searchChatHandler} className='d-flex mb-4'>
@@ -81,9 +84,10 @@ function SideDrawer({show, drawerHandler}) {
             className="rounded-pill border border-primary shadow-none me-2 "
           />
           <Button type='submit' className='rounded-circle border-0 p-2 bg-info'> GO </Button>
+          <Button variant=''> { loadingChat && <Loader></Loader>}  </Button>
           </Form>
   
-          {loading ? (<ChatLoader></ChatLoader>) : (<UserList users={searchResult}></UserList>)}
+          {loading ? (<ChatLoader></ChatLoader>) : (<UserList users={searchResult} onAccessChat={AccessChat}></UserList>)}
         </Offcanvas.Body>
       </Offcanvas>
   );

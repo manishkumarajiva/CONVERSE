@@ -6,7 +6,7 @@ const ChatModel = require("../models/chatModel.js");
 // @ Access         Private
 
 const AccessChat = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
   if (!userId) throw new Error("User ID not found 👎");
 
   var isChat = await ChatModel.find({
@@ -61,7 +61,7 @@ const FetchUserChats = asyncHandler(async (req, res) => {
       .populate("latestMessage")
       .sort({ updatedAt: -1 })
       .then(async (result) => {
-        result = await UserModel.populate(SpeechRecognitionResultList, {
+        result = await UserModel.populate(result, {
           path: "latestMessage,sender",
           select: "name avatar email",
         });

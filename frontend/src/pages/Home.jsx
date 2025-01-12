@@ -22,7 +22,7 @@ const Home = () => {
     <Container
       fluid
       style={glassStyle}
-      className="mt-5 text-white w-25 py-4 px-2 rounded mx-auto"
+      className="mt-5 text-white py-4 px-2 rounded mx-auto"
     >
       <Row className="mx-2 mb-2">
         <Col
@@ -58,6 +58,7 @@ export default Home;
 
 
 const glassStyle = {
+  maxWidth : '500px',
   background: 'rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(15px)',
   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',

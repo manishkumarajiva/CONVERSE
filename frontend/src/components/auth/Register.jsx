@@ -75,7 +75,7 @@ const Register = () => {
         const response = await RegisterHandeler(registerUser);
         toast.success('Register Successfully');
         setSubmitting(false);
-        localStorage.setItem('user',response)
+        localStorage.setItem('userInfo',JSON.stringify(response))
         navigate('/chat');
       })()
     }

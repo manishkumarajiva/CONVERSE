@@ -1,9 +1,9 @@
 import axios from "axios";
 import { URI } from "../constant.js";
-import { ChatState } from "../context/ChatProvider.js";
+
 
 const FetchAllChats = async (search) => {
-  const { user } = ChatState();
+  const user = JSON.parse(localStorage.getItem("userInfo"))
 
   const options = {
     headers: {
@@ -21,7 +21,7 @@ const FetchAllChats = async (search) => {
 
 
 const AccessChats = async (userId) => {
-  const { user } = ChatState();
+  const user = JSON.parse(localStorage.getItem("userInfo"))
 
   const options = {
     headers: {
@@ -31,10 +31,9 @@ const AccessChats = async (userId) => {
 
     params: {
       userId: userId,
-    },
+    }
   };
-
-  const response = await axios.post(URI + "/chat", options);
+  const response = await axios.post(URI + "/chat", {}, options);
   return response.data;
 };
 

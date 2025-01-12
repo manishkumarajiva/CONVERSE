@@ -33,7 +33,7 @@ const Login = () => {
       const response = await LoginHandeler(formData);
       toast.success('Login Successfully');
       setLogin(false);
-      localStorage.setItem('userInfo', response)
+      localStorage.setItem('userInfo', JSON.stringify(response))
       navigate('/chat')
     })()
     console.log(formData);
