@@ -2,7 +2,7 @@ import axios from "axios";
 import { URI } from "../constant.js";
 
 
-const FetchAllChats = async (search) => {
+const SearchUsers = async (search) => {
   const user = JSON.parse(localStorage.getItem("userInfo"))
 
   const options = {
@@ -37,4 +37,27 @@ const AccessChats = async (userId) => {
   return response.data;
 };
 
-export { FetchAllChats, AccessChats };
+
+
+const CreateGroupChat  = async (group) => {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+
+  const options = {
+    headers : {
+      "Content-type" : "application/json",
+      Authorization : `Bearer ${user.authToken}`
+    }
+  }
+
+  // need only id's 
+  const body = {
+    name : group.groupName,
+    users: JSON.stringify(group.users.map((user)=>user._id))
+  }
+
+  const response = await axios.post(URI+'/chat/group', body, options);
+  return response.data;
+}
+
+
+export { SearchUsers, AccessChats, CreateGroupChat };

@@ -36,7 +36,6 @@ const Login = () => {
       localStorage.setItem('userInfo', JSON.stringify(response))
       navigate('/chat')
     })()
-    console.log(formData);
   };
 
   const gustUserHandler = (e) => {

@@ -3,7 +3,7 @@ import { Form, FormControl, Button, Image } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import ChatLoader from '../loader/ChatLoader';
 import { toast } from 'react-toastify';
-import { FetchAllChats, AccessChats } from './APIs';
+import { SearchUsers, AccessChats } from './APIs';
 import { ChatState } from '../context/ChatProvider';
 import logo from '../assests/converse.png';
 import UserList from '../components/user/UserList';
@@ -34,7 +34,7 @@ function SideDrawer({show, drawerHandler}) {
     try {
       setLoading(true);
       const searchChat = async () => {
-        const response = await FetchAllChats(search);
+        const response = await SearchUsers(search);
         (response) ? setSearchResult(response.data) : setSearchResult([]);
         setLoading(false);
       }
