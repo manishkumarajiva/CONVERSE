@@ -31,7 +31,7 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar expand="lg" className="bg-light shadow-lg">
+    <Navbar expand="lg" className="bg-light">
       <SideDrawer show={show} drawerHandler={sideDrawerHandler}></SideDrawer>
       <ProfileModel
         show={profileModel}

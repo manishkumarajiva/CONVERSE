@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
+import Loader from "../loader/Loader";
 import { ChatState } from "../context/ChatProvider";
 
 import { SearchUsers, CreateGroupChat } from "./APIs";
@@ -69,7 +70,7 @@ function GroupChatModel({show, handleShow}) {
         users: selectedUsers
       }
       const groupChatResponse = await CreateGroupChat();
-      (response) ? setChats([...chats, groupChatResponse]) : setChats([]);
+      (groupChatResponse) ? setChats([...chats, groupChatResponse]) : setChats([]);
       setLoading(false);
       handleShow();
       toast.success("New Group Created");
@@ -84,11 +85,11 @@ function GroupChatModel({show, handleShow}) {
 
       <Modal show={show} onHide={handleShow}>
 
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Header className="text-center bg-info text-light" closeButton>
+          <Modal.Title> NEW GROUP CHAT </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <Modal.Body className="bg-secondary-subtle">
           <Form>
             <Form.Group className="mb-3">
               <Form.Label> Group Name </Form.Label>
@@ -96,7 +97,7 @@ function GroupChatModel({show, handleShow}) {
                 type="text"
                 name="groupName"
                 value={groupChatName}
-                onChange={(e)=>{groupNameHandler}}
+                onChange={groupNameHandler}
                 placeholder="Enter Group Name"
                 className="shadow-none"
               />
@@ -113,15 +114,15 @@ function GroupChatModel({show, handleShow}) {
               className="shadow-none"
             />
             </Form.Group>
-
           </Form>
+          
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleShow}>
+        <Modal.Footer className="bg-secondary-subtle">
+          <Button variant="danger" onClick={handleShow}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleShow}>
+          <Button variant="info" onClick={handleShow}>
             Save Changes
           </Button>
         </Modal.Footer>

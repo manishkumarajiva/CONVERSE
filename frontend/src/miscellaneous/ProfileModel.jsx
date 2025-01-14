@@ -1,8 +1,13 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import { Row, Col, Image } from "react-bootstrap";
+import { Badge, Container, Image } from "react-bootstrap";
+import { ChatState } from "../context/ChatProvider";
 
 const ProfileModel = ({ show, showHandler }) => {
+  const { user } = ChatState();
+
+  console.log(user)
+
   return (
     <React.Fragment>
       <Modal
@@ -12,41 +17,27 @@ const ProfileModel = ({ show, showHandler }) => {
         centered
         animation={true}
       >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-sm">Profile</Modal.Title>
+        <Modal.Header className="bg-info" closeButton>
+          <Modal.Title className="text-white"> PROFILE </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <div className="d-flex justify-content-center mb-3">
+
+        <Modal.Body className="p-0">
+          <Container className='p-4 text-center bg-info-subtle' fluid>
             <Image
-              src="https://randomuser.me/api/portraits/men/81.jpg" // Example image
+              src={`${user?.data.avatar ? 'http://localhost:8000/'+user?.data.avatar : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXbovM5T4zHTWspWqxX_jKDXXgBH5Asp6Fvg&s'}`}
               roundedCircle
               height="100px"
               width="100px"
-              className="border border-4 border-primary"
+              className="border-bottom border-info border-5"
             />
-          </div>
 
-          <div className="text-center">
-            <h3 className="mb-1">John Doe</h3>
-            <p className="text-muted mb-2">Web Developer</p>
-          </div>
-
-          <Row>
-            <Col>
-              <p className="text-muted">Bio:</p>
-              <p>
-                Passionate about technology and coding. Enjoy solving complex
-                problems with elegant solutions.
-              </p>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <p className="text-muted">Location:</p>
-              <p>New York, USA</p>
-            </Col>
-          </Row>
+            <h3 className="mb-1"> {user.data.name} </h3>
+            <Badge pill bg='secondary'> {user.data.email} </Badge>
+            <p>
+              {" "}
+              Hi i am {user.data.name}, User of CONVERSE since {new Date(user.data.createdAt).toLocaleDateString()}{" "}
+            </p>
+          </Container>
         </Modal.Body>
       </Modal>
     </React.Fragment>

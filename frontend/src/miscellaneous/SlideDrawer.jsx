@@ -54,8 +54,8 @@ function SideDrawer({show, drawerHandler}) {
       const accessChats = async() => {
         const response = await AccessChats(userId);
         console.log(Array.isArray(chats),'ppp')
-        if(!chats.find(chat => chat._id === response._id)) setChats([response, ...chats]);
-        setSelectedChat(response);
+        if(Array.isArray(chats) && !chats.find(chat => chat._id === response._id)) setChats([response, ...chats]);
+        setSelectedChat(response.data);
         setLoadingChat(false);
         drawerHandler();
       }
