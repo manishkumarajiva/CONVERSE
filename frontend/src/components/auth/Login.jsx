@@ -14,6 +14,7 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const [isLogin, setLogin] = useState(false);
 
+  // if(JSON.parse(localStorage.getItem('userInfo')).authToken) navigate('/chat')
 
   const showHandler = (e) => {
     e.preventDefault();

@@ -17,7 +17,7 @@ function SideDrawer({show, drawerHandler}) {
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const {chats, setChats, selectedChat, setSelectedChat} = ChatState();
+  const {chats, setChats, setSelectedChat} = ChatState();
 
   const searchInputHandler = (e) => {
     setSearch(e.target.value);
@@ -47,13 +47,13 @@ function SideDrawer({show, drawerHandler}) {
   }
 
 
-  const AccessChat = (userId) => {
+  const AccessChat = (e, userId) => {
+    e.preventDefault();
     try {
       setLoadingChat(true);
 
       const accessChats = async() => {
         const response = await AccessChats(userId);
-        console.log(Array.isArray(chats),'ppp')
         if(Array.isArray(chats) && !chats.find(chat => chat._id === response._id)) setChats([response, ...chats]);
         setSelectedChat(response.data);
         setLoadingChat(false);

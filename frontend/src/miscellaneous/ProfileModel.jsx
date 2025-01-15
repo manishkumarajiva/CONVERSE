@@ -6,8 +6,6 @@ import { ChatState } from "../context/ChatProvider";
 const ProfileModel = ({ show, showHandler }) => {
   const { user } = ChatState();
 
-  console.log(user)
-
   return (
     <React.Fragment>
       <Modal
