@@ -55,11 +55,11 @@ function SideDrawer({show, drawerHandler}) {
       const accessChats = async() => {
         const response = await AccessChats(userId);
         if(Array.isArray(chats) && !chats.find(chat => chat._id === response._id)) setChats([response, ...chats]);
-        setSelectedChat(response.data);
+        setSelectedChat(response);
         setLoadingChat(false);
         drawerHandler();
       }
-      accessChats();
+      accessChats();  
     } catch (error) {
       toast.error('Failed Access Chat');
       console.error("ACCESS CHAT : ", error.message);

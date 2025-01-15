@@ -32,7 +32,7 @@ function GroupChatModel({show, handleShow}) {
     try {
       setLoading(true);
       const response = await SearchUsers(search);
-      (response) ? setSelectedUsers(response) : setSelectedUsers([]);
+      (response) ? setSearchResult(response.data) : setSearchResult([]);
       setLoading(false);
     } catch (error) {
       toast.error("Failed To Search");
