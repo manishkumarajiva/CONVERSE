@@ -73,7 +73,7 @@ const MyChats = ({}) => {
                         onClick={()=>{setSelectedChat(chat)}}
                         className={`${chatCSS} ${
                           chat._id === selectedChat._id
-                            ? "bg-info"
+                            ? "bg-info text-light border-bottom border-dark"
                             : "bg-secondary-subtle"
                         }`}
                       >
