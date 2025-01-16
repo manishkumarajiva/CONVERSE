@@ -3,3 +3,14 @@
     display: flex;
     flex-direction: column;    
 }
+
+.p-hover:hover{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.eye-hover{
+    background-color: aquamarine;
+}
+.eye-hover:hover{
+    background-color: aqua;
+}

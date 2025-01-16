@@ -40,7 +40,7 @@ const SendMessage = asyncHandler(async (req, res) => {
 // @ Description    Get All Message
 // @ Access         Private
 
-const AllMessages = asyncHandler(async (req, res) => {
+const GetAllMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
   try {
@@ -57,4 +57,4 @@ const AllMessages = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { SendMessage, AllMessages }
+module.exports = { SendMessage, GetAllMessages }

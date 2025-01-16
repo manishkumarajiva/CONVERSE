@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const router = Router();
 
-const { SendMessage, AllMessages } = require("../../controllers/messageController.js");
+const { SendMessage, GetAllMessages } = require("../../controllers/messageController.js");
 const protect = require('../../middlewares/protect.js');
 
 // --------------- MESSAGE ROUTES ------------ //
 
-router.post('/send', protect, SendMessage);
-router.get('/fetchall', protect, AllMessages);
+router.post('/', protect, SendMessage);
+router.get('/', protect, GetAllMessages);
 
 
 module.exports = router;

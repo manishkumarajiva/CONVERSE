@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Navbar,
-  Dropdown,
-  Image,
-  Button,
-} from "react-bootstrap";
+import { Container, Navbar, Dropdown, Image, Button } from "react-bootstrap";
 import "./XCSS.css";
 
 import SideDrawer from "./SlideDrawer";
 import ProfileModel from "./ProfileModel";
 import { useNavigate } from "react-router-dom";
+import { user } from "../context/ChatProvider";
 
 const NavBar = () => {
   const [show, setShow] = useState(false);
@@ -26,17 +21,15 @@ const NavBar = () => {
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem("auth");
+    localStorage.removeItem("userInfo");
     navigate("/");
   };
 
   return (
-    <Navbar expand="lg" className="bg-light">
-      <SideDrawer show={show} drawerHandler={sideDrawerHandler}></SideDrawer>
-      <ProfileModel
-        show={profileModel}
-        showHandler={profileModelHandler}
-      ></ProfileModel>
+    <Navbar expand="md" className="bg-light">
+      <SideDrawer show={show} drawerHandler={sideDrawerHandler} />
+      <ProfileModel show={profileModel} showHandler={profileModelHandler} />
+
       <Container className="p-0 d-flex justify-content-between" fluid>
         <Container fluid>
           <Button
@@ -80,6 +73,12 @@ const NavBar = () => {
           </Container>
         </Container>
       </Container>
+
+      {/* Collapse toggle */}
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        {/* Add the content you want to collapse here */}
+      </Navbar.Collapse>
     </Navbar>
   );
 };

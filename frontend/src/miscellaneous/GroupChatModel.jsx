@@ -93,7 +93,7 @@ function GroupChatModel({ show, handleShow }) {
           <Modal.Title> NEW GROUP CHAT </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body className="bg-secondary-subtle">
+        <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
               <Form.Label> Group Name </Form.Label>
@@ -136,7 +136,7 @@ function GroupChatModel({ show, handleShow }) {
           </ListGroup>
         </Modal.Body>
 
-        <Modal.Footer className="bg-secondary-subtle">
+        <Modal.Footer className="bg-info-subtle">
           <Button variant="info" onClick={handleSubmit} className='w-100 text-light fw-bold'>
             New Chat Group
           </Button>

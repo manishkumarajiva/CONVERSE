@@ -14,4 +14,36 @@ const FetchUserChats = async () => {
   return response.data;
 };
 
-export { FetchUserChats };
+
+
+
+const FetchMessages = async () => {
+  const user = JSON.parse(localStorage.getItem("userInfo"))
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${user.authToken}`,
+    },
+  };
+
+  const response = await axios.get(URI + "/message", options);
+  return response.data;
+};
+
+
+const SendNewMessage = async (body) => {
+  const user = JSON.parse(localStorage.getItem("userInfo"))
+
+  const options = {
+    headers: {
+      "Content-type" : "application/json",
+      Authorization: `Bearer ${user.authToken}`,
+    },
+  };
+
+  const response = await axios.post(URI + "/message", body, options);
+  return response.data;
+};
+
+
+export { FetchUserChats, FetchMessages, SendNewMessage };

@@ -1,10 +1,10 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import { Badge, Container, Image } from "react-bootstrap";
-import { ChatState } from "../context/ChatProvider";
 
 const ProfileModel = ({ show, showHandler }) => {
-  const { user } = ChatState();
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+
 
   return (
     <React.Fragment>

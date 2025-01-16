@@ -1,14 +1,25 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+import React from "react";
+import { Container } from "react-bootstrap";
+import { ChatState } from "../../context/ChatProvider";
+import SingleChat from "./SingleChat";
+import "./Chat.css";
 
-const ChatInbox = () => {
-  return <React.Fragment>
-    <Container className='bg-light vh-100 p-3 rounded' fluid>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque recusandae quisquam animi cupiditate voluptates dolore accusantium, dolores eum. Quis, veritatis ipsum. Culpa ipsum officia porro expedita maiores quia sit qui.
+const ChatInbox = ({ fetchAgain, onFetch }) => {
+  const { selectedChat } = ChatState();
 
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde dignissimos officiis, quisquam laborum tempora atque odit quaerat. Voluptatum, autem excepturi aliquam rerum, facilis laborum expedita fugit cupiditate unde numquam eos?
-    </Container>
-  </React.Fragment>
+  return (
+    <React.Fragment>
+      <Container className={`bg-light p-3 ${selectedChat ? 'd-block' : 'd-none'} d-md-block rounded`} style={{ height: "800px" }}>
+        <SingleChat></SingleChat>
+      </Container>
+    </React.Fragment>
+  );
+};
+
+export default ChatInbox;
+
+{
+  /* <Container className="text-end" role="button">
+            <span className="eye-hover p-2 rounded"> &#128065; </span>{" "}
+          </Container> */
 }
-
-export default ChatInbox
