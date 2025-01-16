@@ -14,7 +14,7 @@ const UserListItems = ({ index, user, onAccess }) => {
       id='userchat'
       key={index}
       onClick={(e)=>{onAccess(e, user._id)}}
-      className="d-flex align-items-center mb-2 border-bottom border-info rounded-pill shadow-lg px-2"
+      className="d-flex align-items-center mb-2 rounded px-2"
     >
       <Image
         src={imageURL}

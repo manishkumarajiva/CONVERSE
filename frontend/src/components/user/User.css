@@ -1,3 +1,7 @@
+#userchat{
+    border-bottom: 5px solid cyan;
+}
+
 #userchat:hover{
     background-color: aquamarine;
 }
