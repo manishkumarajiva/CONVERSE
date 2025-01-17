@@ -26,7 +26,7 @@ function UpdateGroupChatModel() {
 
   // Update's Group Handlers
 
-  const groupNameHandler = async () => {
+  const updateGroupNameHandler = async () => {
     if(!groupChatName) return;
 
     try {
