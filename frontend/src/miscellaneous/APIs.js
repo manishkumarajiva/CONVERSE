@@ -60,4 +60,47 @@ const CreateGroupChat  = async (group) => {
 }
 
 
-export { SearchUsers, AccessChats, CreateGroupChat };
+const RenameGroupChat = async (group) => {
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
+  const options = {
+    headers : {
+      "Content-type" : "application/json",
+      Authorization : `Bearer ${user.authToken}`
+    }
+  }
+
+  const response = await axios.put(URI+'/chat/renamegroup', group, options);
+  return response.data;
+}
+
+
+
+const AddToGroupChat = async (user) => {
+  const options = {
+    headers : {
+      "Content-type" : "application/json",
+      Authorization : `Bearer ${user.authToken}`
+    }    
+  }
+
+  const response = await axios.put(URI+'/chat/addtogroup', user, options);
+  return response.data;
+}
+
+
+const RemoveToGroupChat = async (user) => {
+  const options = {
+    headers : {
+      "Content-type" : "application/json",
+      Authorization : `Bearer ${user.authToken}`
+    }    
+  }
+
+  const response = await axios.put(URI+'/chat/removefromgroup', user, options);
+  return response.data;
+}
+
+
+
+export { SearchUsers, AccessChats, CreateGroupChat, RenameGroupChat, AddToGroupChat, RemoveToGroupChat };

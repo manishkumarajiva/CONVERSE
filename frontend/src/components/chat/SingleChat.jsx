@@ -66,10 +66,10 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
               &#8672;{" "}
             </span>
           </Container>
-          <Container className="text-center fs-5 w-100" fluid>
+          <Container className="text-center fs-5 w-100 text-info fw-bold" fluid>
             {selectedChat.isGroupChat
               ? selectedChat.chatName.toUpperCase()
-              : getRecipent(user.data, selectedChat.users).name.toUpperCase()}
+              : getRecipent(user, selectedChat.users).name.toUpperCase()}
           </Container>
 
           <Container className="text-end" fluid>
@@ -80,7 +80,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
               ></UpdateGroupChatModel>
             ) : (
               <ProfileModel
-                user={getRecipent(user.data, selectedChat.users)}
+                user={getRecipent(user, selectedChat.users)}
               ></ProfileModel>
             )}
           </Container>

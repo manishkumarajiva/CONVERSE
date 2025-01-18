@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { ChatState } from "../context/ChatProvider";
 
 import { SearchUsers, CreateGroupChat } from "./APIs";
-import { FormText, ListGroup, ListGroupItem } from "react-bootstrap";
+import { User, UserBadge } from "../common/GroupModelHelper";
+import { FormText, ListGroup } from "react-bootstrap";
 
 function GroupChatModel({ show, handleShow }) {
   const [groupChatName, setGroupChatName] = useState("");
@@ -74,9 +75,11 @@ function GroupChatModel({ show, handleShow }) {
         users: selectedUsers,
       };
       const groupChatResponse = await CreateGroupChat(groupPlayload);
-      (groupChatResponse) ? setChats([...chats, groupChatResponse.data]) : setChats([]);
+      groupChatResponse
+        ? setChats([...chats, groupChatResponse.data])
+        : setChats([]);
       setLoading(false);
-      setGroupChatName('');
+      setGroupChatName("");
       setSelectedUsers([]);
       handleShow();
       toast.success("New Group Created");
@@ -90,7 +93,10 @@ function GroupChatModel({ show, handleShow }) {
     <React.Fragment>
       <Modal show={show} onHide={handleShow}>
         <Modal.Header className="text-center bg-info text-light" closeButton>
-          <Modal.Title> {groupChatName ? groupChatName : 'NEW CHAT GROUP'} </Modal.Title>
+          <Modal.Title>
+            {" "}
+            {groupChatName ? groupChatName : "NEW CHAT GROUP"}{" "}
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -118,16 +124,23 @@ function GroupChatModel({ show, handleShow }) {
                 className="shadow-none"
               />
             </Form.Group>
-            {loading && (
+            {loading ? (
               <FormText className="text-primary"> Loading... </FormText>
+            ) : (
+              <Stack
+                direction="horizontal"
+                gap={2}
+                className="d-flex flex-wrap"
+              >
+                {selectedUsers.map((user, index) => (
+                  <UserBadge
+                    user={user}
+                    onRemove={removeToGroupHandler}
+                  ></UserBadge>
+                ))}
+              </Stack>
             )}
           </Form>
-
-          <Stack direction="horizontal" gap={2} className="d-flex flex-wrap">
-            {selectedUsers.map((user, index) => (
-              <UserBadge user={user} onRemove={removeToGroupHandler}></UserBadge>
-            ))}
-          </Stack>
 
           <ListGroup as={"ul"} className="border-0">
             {searhResult.map((user) => (
@@ -137,7 +150,11 @@ function GroupChatModel({ show, handleShow }) {
         </Modal.Body>
 
         <Modal.Footer className="bg-info-subtle">
-          <Button variant="info" onClick={handleSubmit} className='w-100 text-light fw-bold'>
+          <Button
+            variant="info"
+            onClick={handleSubmit}
+            className="w-100 text-light fw-bold"
+          >
             New Chat Group
           </Button>
         </Modal.Footer>
@@ -145,27 +162,5 @@ function GroupChatModel({ show, handleShow }) {
     </React.Fragment>
   );
 }
-
-const User = ({ user, onAddToCart }) => {
-  return (
-    <ListGroupItem as={"li"} key={user._id} onClick={() => onAddToCart(user)}>
-      {user.name}
-    </ListGroupItem>
-  );
-};
-
-const UserBadge = ({ user, onRemove }) => {
-  return (
-    <Badge
-      pill
-      bg="dark"
-      onClick={(e)=>onRemove(user)}
-      className="py-2 px-3 border border-info border-5"
-      role='button'
-    >
-      {user.name} &nbsp; ❌
-    </Badge>
-  );
-};
 
 export default GroupChatModel;
