@@ -18,7 +18,7 @@ import logo from "../../assests/conv.png";
 import "./Chat.css";
 
 const chatCSS =
-  "d-flex flex-sm-wrap flex-md-nowrap border-5 border-start-0 border-top-0 border-end-0  border-info my-1 rounded ";
+  "d-flex flex-sm-wrap flex-md-nowrap border-5 border-start-0 border-top-0 border-end-0  border-info my-1 overflow-y-hidden rounded ";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -50,7 +50,7 @@ const MyChats = ({ fetchAgain }) => {
     <React.Fragment>
       <GroupChatModel show={show} handleShow={setShow}></GroupChatModel>
       <Container
-        className={` bg-light rounded`}
+        className={` bg-light rounded ${selectedChat ? 'd-sm-none' : 'd-sm-block' } d-md-block`}
         style={{ height: "800px" }}
         fluid
       >

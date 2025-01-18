@@ -20,8 +20,6 @@ const Register = () => {
   const [show, setShow] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
 
-  
-
   const showHandler = (e) => {
     e.preventDefault();
     setShow(!show);
@@ -53,7 +51,7 @@ const Register = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     
-    setSubmitting(true); // animation
+    setSubmitting(true);
 
     const error = formValidation(formData);
     if (error.password) {

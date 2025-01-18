@@ -9,8 +9,8 @@ const ChatInbox = ({ fetchAgain, onFetch }) => {
 
   return (
     <React.Fragment>
-      <Container className={`bg-light p-3 ${selectedChat ? 'd-block' : 'd-none'} d-md-block rounded`} style={{ height: "800px" }}>
-        <SingleChat></SingleChat>
+      <Container className={`bg-light p-3 ${selectedChat ? 'd-block' : 'd-none'} d-lg-block rounded`} style={{ height: "800px" }} fluid>
+        <SingleChat fetchAgain={fetchAgain} onFetch={onFetch}></SingleChat>
       </Container>
     </React.Fragment>
   );

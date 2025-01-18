@@ -90,7 +90,7 @@ function GroupChatModel({ show, handleShow }) {
     <React.Fragment>
       <Modal show={show} onHide={handleShow}>
         <Modal.Header className="text-center bg-info text-light" closeButton>
-          <Modal.Title> NEW GROUP CHAT </Modal.Title>
+          <Modal.Title> {groupChatName ? groupChatName : 'NEW CHAT GROUP'} </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
