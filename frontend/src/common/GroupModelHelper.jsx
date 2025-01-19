@@ -1,8 +1,9 @@
 import { ListGroupItem, Badge } from "react-bootstrap";
+import "./Common.css";
 
 export const User = ({ user, onAddToCart }) => {
   return (
-    <ListGroupItem as={"li"} key={user._id} onClick={() => onAddToCart(user)}>
+    <ListGroupItem as={"li"} key={user._id} onClick={() => onAddToCart(user)} className="rounded user-list-item">
       {user.name}
     </ListGroupItem>
   );

@@ -30,6 +30,7 @@ const Home = () => {
           className={`p-2 text-center rounded-pill ${
             swap ? "bg-light text-dark" : "bg-transparent text-white fw-bold"
           }`}
+          role='button'
         >
           Login
         </Col>
@@ -39,6 +40,7 @@ const Home = () => {
           className={`p-2 text-center rounded-pill ${
             swap ? "bg-transparent text-white fw-bold" : "bg-light text-dark"
           }`}
+          role="button"
         >
           Register
         </Col>

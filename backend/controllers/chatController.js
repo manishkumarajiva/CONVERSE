@@ -141,8 +141,6 @@ const RenameGroup = asyncHandler(async (req, res) => {
 const AddToGroup = asyncHandler(async (req, res) => {
   const { chatId, userId } = req.body;
 
-  // check if requester is Admin ?
-
   const added = await ChatModel.findByIdAndUpdate(
     { _id: chatId },
     { $push: { users: userId } },
@@ -151,37 +149,43 @@ const AddToGroup = asyncHandler(async (req, res) => {
     .populate("users", "-password")
     .populate("groupAdmin", "-password");
 
-    if(!added){
-        res.status(400);
-        throw new Error("Chat Not Found")
-    }else{
-        res.status(201).json({ status : 201, data : added });
-    }
+  if (!added) {
+    res.status(400);
+    throw new Error("Chat Not Found");
+  } else {
+    res.status(201).json({ status: 201, data: added });
+  }
 });
-
 
 // @ Description    Remove User to Group
 // @ Access         Private - Admin
 
 const RemoveFromGroup = asyncHandler(async (req, res) => {
-    const { chatId, userId } = req.body;
-  
-    // check if requester is Admin ?
-  
-    const removed = await ChatModel.findByIdAndUpdate(
-      { _id: chatId },
-      { $pull: { users: userId } },
-      { new: true }
-    )
-      .populate("users", "-password")
-      .populate("groupAdmin", "-password");
-  
-      if(!removed){
-          res.status(400);
-          throw new Error("Chat Not Found")
-      }else{
-          res.status(201).json({ status : 201, data : removed });
-      }
-  });
+  const { chatId, userId } = req.body;
 
-module.exports = { AccessChat, FetchUserChats, CreateGroupChat, RenameGroup, AddToGroup, RemoveFromGroup };
+  // check if requester is Admin ?
+
+  const removed = await ChatModel.findByIdAndUpdate(
+    { _id: chatId },
+    { $pull: { users: userId } },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!removed) {
+    res.status(400);
+    throw new Error("Chat Not Found");
+  } else {
+    res.status(201).json({ status: 201, data: removed });
+  }
+});
+
+module.exports = {
+  AccessChat,
+  FetchUserChats,
+  CreateGroupChat,
+  RenameGroup,
+  AddToGroup,
+  RemoveFromGroup,
+};

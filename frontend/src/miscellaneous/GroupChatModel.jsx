@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { toast } from "react-toastify";
 import { ChatState } from "../context/ChatProvider";
@@ -20,7 +19,7 @@ function GroupChatModel({ show, handleShow }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { user, chats, setChats } = ChatState();
+  const { chats, setChats } = ChatState();
 
   const groupNameHandler = (event) => {
     setGroupChatName(event.target.value);
@@ -95,7 +94,7 @@ function GroupChatModel({ show, handleShow }) {
         <Modal.Header className="text-center bg-info text-light" closeButton>
           <Modal.Title>
             {" "}
-            {groupChatName ? groupChatName : "NEW CHAT GROUP"}{" "}
+            {groupChatName ? groupChatName.toLocaleUpperCase() : "NEW CHAT GROUP"}{" "}
           </Modal.Title>
         </Modal.Header>
 
@@ -142,7 +141,7 @@ function GroupChatModel({ show, handleShow }) {
             )}
           </Form>
 
-          <ListGroup as={"ul"} className="border-0">
+          <ListGroup as={"ul"}>
             {searhResult.map((user) => (
               <User user={user} onAddToCart={handleAddToGroup}></User>
             ))}

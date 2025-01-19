@@ -11,7 +11,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from "react-bootstrap";
-import { getSender } from "../../config/ChatLogics";
+import { getRecipent } from "../../config/ChatLogics";
 import GroupChatModel from "../../miscellaneous/GroupChatModel";
 import ChatLoader from "../../loader/ChatLoader";
 import logo from "../../assests/conv.png";
@@ -73,7 +73,7 @@ const MyChats = ({ fetchAgain }) => {
             <ListGroup as={"ul"}>
               {chats ? (
                 chats.map((chat, index) => {
-                  const { name, avatar, email } = getSender(
+                  const { name, avatar, email } = getRecipent(
                     loggedUser,
                     chat.users
                   );
@@ -104,7 +104,7 @@ const MyChats = ({ fetchAgain }) => {
                           <Container>
                             <Button variant="" className="position-relative p-0 fw-bold">
                               {chat.chatName} 
-                              <Badge bg="secondary" className='position-absolute top-0 start-100 bg-light text-dark ms-1'> Admin </Badge>
+                              <Badge bg="secondary" className='position-absolute top-0 start-100 bg-light text-dark ms-1'> Group </Badge>
                             </Button>
                             <p> {chat.groupAdmin.email} </p>
                           </Container>

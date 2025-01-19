@@ -70,13 +70,15 @@ const RenameGroupChat = async (group) => {
     }
   }
 
-  const response = await axios.put(URI+'/chat/renamegroup', group, options);
+  const response = await axios.patch(URI+'/chat/renamegroup', group, options);
   return response.data;
 }
 
 
 
-const AddToGroupChat = async (user) => {
+const AddToGroupChat = async (group) => {
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
   const options = {
     headers : {
       "Content-type" : "application/json",
@@ -84,12 +86,14 @@ const AddToGroupChat = async (user) => {
     }    
   }
 
-  const response = await axios.put(URI+'/chat/addtogroup', user, options);
+  const response = await axios.put(URI+'/chat/addtogroup', group, options);
   return response.data;
 }
 
 
-const RemoveToGroupChat = async (user) => {
+const RemoveToGroupChat = async (group) => {
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
   const options = {
     headers : {
       "Content-type" : "application/json",
@@ -97,7 +101,7 @@ const RemoveToGroupChat = async (user) => {
     }    
   }
 
-  const response = await axios.put(URI+'/chat/removefromgroup', user, options);
+  const response = await axios.put(URI+'/chat/removefromgroup', group, options);
   return response.data;
 }
 

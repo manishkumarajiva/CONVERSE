@@ -1,0 +1,12 @@
+.user-list-item{
+    background-color: lightgoldenrodyellow;
+    margin: 2px 0px;
+    border: none;
+    
+}
+
+.user-list-item:hover{
+    background-color: wheat;
+    cursor: pointer;
+    border-bottom: 1px red solid;
+}

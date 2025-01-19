@@ -150,7 +150,7 @@ const NavBar = () => {
           <Offcanvas.Body>
             <Container>
 
-              <ProfileModel user={user.data}>
+              <ProfileModel user={user}>
                 <Image
                   className="rounded-circle"
                   height="60px"

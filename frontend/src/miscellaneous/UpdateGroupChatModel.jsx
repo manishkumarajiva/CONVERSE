@@ -5,20 +5,31 @@ import {
   Button,
   Modal,
   ListGroup,
-  FormText,
   Stack,
+  InputGroup,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { ChatState } from "../context/ChatProvider";
 
-import { SearchUsers, RenameGroupChat, AddToGroupChat, RemoveToGroupChat } from "./APIs";
+import {
+  SearchUsers,
+  RenameGroupChat,
+  AddToGroupChat,
+  RemoveToGroupChat,
+} from "./APIs";
+
 import { User, UserBadge } from "../common/GroupModelHelper";
+import InputGroupText from "react-bootstrap/esm/InputGroupText";
+
+import Loader from "../loader/Loader";
 
 function UpdateGroupChatModel({ fetchAgain, onFetch }) {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
 
-  const [groupChatName, setGroupChatName] = useState("");
+  const { user, selectedChat, setSelectedChat } = ChatState();
+
+  const [groupChatName, setGroupChatName] = useState(selectedChat.chatName);
 
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -26,11 +37,11 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
   const [loading, setLoading] = useState(false);
   const [renameLoading, setRenameLoading] = useState(false);
 
-  const { user, selectedChat, setSelectedChat } = ChatState();
-
   // Update's Group Handlers
 
-  const updateGroupHandler = async () => {
+  const updateGroupHandler = async (event) => {
+    event.preventDefault();
+
     if (!groupChatName) return;
 
     try {
@@ -42,6 +53,7 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
       const response = await RenameGroupChat(payload);
       setSelectedChat(response.data);
       onFetch(!fetchAgain);
+      toast.success("Updated Successfully")
       setRenameLoading(false);
     } catch (error) {
       toast.error("Failed To Rename");
@@ -72,13 +84,14 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
   };
 
   const handleAddToGroup = async (newUser) => {
-
-    if(selectedChat.users.find((user) => user._id === newUser._id)){
-      toast.info('User Already In Group');
+    if (selectedChat.users.find((user) => user._id === newUser._id)) {
+      toast.info("User Already In Group");
       return;
     }
 
-    if(selectedChat.groupAdmin._id !== user.id){
+    if (selectedChat.groupAdmin._id !== user.id) {
+      // check logged user === admin ? isAdmin : notAdmin
+
       toast.warning("Only Admin Can Add Someone");
       return;
     }
@@ -87,8 +100,8 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
       setLoading(true);
       const payload = {
         chatId: selectedChat._id,
-        userId: newUser._id
-      }
+        userId: newUser._id,
+      };
       const response = await AddToGroupChat(payload);
       setSelectedChat(response.data);
       onFetch(!fetchAgain);
@@ -97,14 +110,11 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
       toast.error("Failed To Add");
       console.log("FAILED TO ADD IN GROUP ", error.message);
     }
-  setGroupChatName('');
+    setGroupChatName("");
   };
 
   const removeToGroupHandler = async (ruser) => {
-    if(
-      selectedChat.groupAdmin._id !== user._id && 
-      ruser._id !== user._id
-    ){
+    if (selectedChat.groupAdmin._id !== user.data._id) {
       toast.warning("Only Admin Can Remove");
       return;
     }
@@ -113,10 +123,14 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
       setLoading(true);
       const payload = {
         chatId: selectedChat._id,
-        userId: ruser._id
-      }
+        userId: ruser._id,
+      };
       const response = await RemoveToGroupChat(payload);
-      ruser._id === user._id ? setSelectedChat() : setSelectedChat(response.data);
+      toast.success("Removed Successfully");
+      ruser._id === user._id
+        ? setSelectedChat()
+        : setSelectedChat(response.data);
+
       onFetch(!fetchAgain);
       setLoading(false);
     } catch (error) {
@@ -124,7 +138,7 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
       console.log("FAILED TO REMOVE FROM GROUP ", error.message);
     }
 
-    setGroupChatName('');
+    setGroupChatName("");
   };
 
   return (
@@ -145,16 +159,25 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
           <Form>
             <Form.Group className="mb-3">
               <Form.Label> Group Name </Form.Label>
-              <Form.Control
-                type="text"
-                name="groupName"
-                value={groupChatName}
-                onChange={(e) => {
-                  setGroupChatName(e.target.value);
-                }}
-                placeholder="Enter Group Name"
-                className="shadow-none"
-              />
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  name="groupName"
+                  value={groupChatName}
+                  onChange={(e) => {
+                    setGroupChatName(e.target.value);
+                  }}
+                  placeholder="Enter Group Name"
+                  className="shadow-none"
+                />
+                <InputGroupText
+                  role="button"
+                  onClick={updateGroupHandler}
+                  className="update-btn"
+                >
+                  {renameLoading ? <Loader></Loader> : "Update"}
+                </InputGroupText>
+              </InputGroup>
             </Form.Group>
 
             <Form.Group className="mb-3 shadow-none">
@@ -168,25 +191,18 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
                 className="shadow-none"
               />
             </Form.Group>
-            {loading ? (
-              <FormText className="text-primary"> Loading... </FormText>
-            ) : (
-              <Stack
-                direction="horizontal"
-                gap={2}
-                className="d-flex flex-wrap"
-              >
-                {selectedChat.users.map((user, index) => (
-                  <UserBadge
-                    user={user}
-                    onRemove={removeToGroupHandler}
-                  ></UserBadge>
-                ))}
-              </Stack>
-            )}
+
+            <Stack direction="horizontal" gap={2} className="d-flex flex-wrap">
+              {selectedChat.users.map((user, index) => (
+                <UserBadge
+                  user={user}
+                  onRemove={removeToGroupHandler}
+                ></UserBadge>
+              ))}
+            </Stack>
           </Form>
 
-          <ListGroup as={"ul"} className="border-0">
+          <ListGroup as={"ul"} className="border-0 mt-1">
             {searchResult.map((user) => (
               <User user={user} onAddToCart={handleAddToGroup}></User>
             ))}
@@ -195,11 +211,11 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
 
         <Modal.Footer className="bg-secondary-subtle">
           <Button
-            variant="info"
-            onClick={updateGroupHandler}
+            variant="danger"
+            onClick={removeToGroupHandler}
             className="w-100 text-light fw-bold"
           >
-            New Chat Group
+            { loading ? (<Loader></Loader>) : ('Leave Group') }
           </Button>
         </Modal.Footer>
       </Modal>
