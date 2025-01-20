@@ -1,12 +1,13 @@
 .user-list-item{
     background-color: lightgoldenrodyellow;
     margin: 2px 0px;
+    text-align: center;
     border: none;
-    
 }
 
 .user-list-item:hover{
-    background-color: wheat;
+    background-color: rgb(89, 217, 246);
     cursor: pointer;
-    border-bottom: 1px red solid;
+    color: white;
+    transition: all 300ms ease;
 }

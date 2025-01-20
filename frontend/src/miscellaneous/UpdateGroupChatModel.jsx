@@ -89,9 +89,8 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
       return;
     }
 
-    if (selectedChat.groupAdmin._id !== user.id) {
+    if (selectedChat.groupAdmin._id !== user.data._id) {
       // check logged user === admin ? isAdmin : notAdmin
-
       toast.warning("Only Admin Can Add Someone");
       return;
     }
@@ -155,7 +154,7 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body className="bg-secondary-subtle">
+        <Modal.Body className="bg-info-subtle">
           <Form>
             <Form.Group className="mb-3">
               <Form.Label> Group Name </Form.Label>
@@ -173,9 +172,9 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
                 <InputGroupText
                   role="button"
                   onClick={updateGroupHandler}
-                  className="update-btn"
+                  className="update-btn bg-info text-white"
                 >
-                  {renameLoading ? <Loader></Loader> : "Update"}
+                  {renameLoading ? <Loader></Loader> : "Rename"}
                 </InputGroupText>
               </InputGroup>
             </Form.Group>
@@ -209,7 +208,7 @@ function UpdateGroupChatModel({ fetchAgain, onFetch }) {
           </ListGroup>
         </Modal.Body>
 
-        <Modal.Footer className="bg-secondary-subtle">
+        <Modal.Footer className="bg-info-subtle">
           <Button
             variant="danger"
             onClick={removeToGroupHandler}

@@ -29,7 +29,7 @@ const ProfileModel = ({ user, children }) => {
         </Modal.Header>
 
         <Modal.Body className="p-0">
-          <Container className='p-4 text-center bg-info-subtle' fluid>
+          <Container className='p-4 text-center' fluid>
             <Image
               src={`${user?.avatar ? 'http://localhost:8000/'+user?.avatar : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXbovM5T4zHTWspWqxX_jKDXXgBH5Asp6Fvg&s'}`}
               roundedCircle
