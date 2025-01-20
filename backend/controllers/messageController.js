@@ -29,6 +29,13 @@ const SendMessage = asyncHandler(async (req, res) => {
       select: "name avatar email",
     });
 
+    message = await message.populate("sender", "name avatar");
+    message = await message.populate("chat");
+    message = await UserModel.populate(message, {
+      path: "chat.users",
+      select: "name avatar email",
+    });
+
     await ChatModel.findByIdAndUpdate(chatId, { latestMessage: message });
     res.status(201).json({ status: 201, data: message });
   } catch (error) {

@@ -7,7 +7,7 @@ const protect = require('../../middlewares/protect.js');
 // --------------- MESSAGE ROUTES ------------ //
 
 router.post('/', protect, SendMessage);
-router.get('/', protect, GetAllMessages);
+router.get('/:chatId', protect, GetAllMessages);
 
 
 module.exports = router;
