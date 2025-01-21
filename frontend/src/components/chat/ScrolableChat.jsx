@@ -1,12 +1,20 @@
 import React from 'react';
 import { ChatState } from '../../context/ChatProvider';
+import ScrolableFeed from 'react-scrollable-feed';
 
-const ScrolableChat = ({ message }) => {
+
+const ScrolableChat = ({ messages }) => {
     const { user } = ChatState();
 
   return (
     <React.Fragment>
-      <p> Scrolable Chat </p>
+      <ScrolableFeed>
+      {
+        messages.map((message) => {
+          return <p>{message.content}</p>
+        })
+      }
+      </ScrolableFeed>
     </React.Fragment>
   )
 }

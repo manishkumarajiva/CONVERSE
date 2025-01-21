@@ -74,7 +74,7 @@ const MyChats = ({ fetchAgain }) => {
               {chats ? (
                 chats.map((chat, index) => {
                   const { name, avatar, email } = getRecipent(
-                    loggedUser,
+                    loggedUser.data,
                     chat.users
                   );
                   return (

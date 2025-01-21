@@ -17,13 +17,16 @@ const FetchUserChats = async () => {
 
 
 
-const FetchMessages = async () => {
+const FetchMessages = async (chatId) => {
   const user = JSON.parse(localStorage.getItem("userInfo"))
 
   const options = {
     headers: {
       Authorization: `Bearer ${user.authToken}`,
     },
+    params: {
+      chatId : chatId
+    }
   };
 
   const response = await axios.get(URI + "/message", options);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileModel from "../../miscellaneous/ProfileModel";
 import { toast } from "react-toastify";
 import { ChatState } from "../../context/ChatProvider";
@@ -6,19 +6,17 @@ import { FetchMessages, SendNewMessage } from "./ChatAPI";
 import { getRecipent } from "../../config/ChatLogics";
 import UpdateGroupChatModel from "../../miscellaneous/UpdateGroupChatModel";
 import ScrolableChat from "./ScrolableChat";
-import {FormControl, InputGroup, Spinner} from "react-bootstrap";
+import { FormControl, InputGroup, Spinner } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import logo from "../../assests/logo.png";
 import "./Chat.css";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 
-
-
 const SingleChat = ({ fetchAgain, onFetch }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -26,6 +24,10 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
   const { user, selectedChat, setSelectedChat, notification, setNotification } =
     ChatState();
+
+  const newMessageHandler = (e) => {
+    setNewMessage(e.target.value);
+  };
 
   const fetchMessageHandler = async () => {
     if (!selectedChat) return;
@@ -35,6 +37,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
       const response = await FetchMessages(selectedChat._id);
       response ? setMessages(response.data) : setMessages([]);
       setLoading(false);
+      setMessages(response.data);
     } catch (error) {
       toast.error("Failed To Fetch");
       console.log("FAILED TO FETCH MESSAGES ", error.messages);
@@ -42,21 +45,31 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   };
 
   const sendMessageHandler = async (event) => {
-    try {
-      setNewMessage("");
-      const payload = {
-        chatId: selectedChat,
-        content: newMessage,
-      };
-      const response = await SendNewMessage(payload);
-      setMessages(response.data);
-    } catch (error) {
-      toast.error("Failed To Send");
-      console.log("FAILED TO SEND MESSAGE ", error.message);
+    event.preventDefault()
+    if (event.key === "Enter" && newMessage) {
+      try {
+        const payload = {
+          chatId: selectedChat,
+          content: newMessage,
+        };
+        const response = await SendNewMessage(payload);
+        setMessages([...messages, response.data]);
+      } catch (error) {
+        toast.error("Failed To Send");
+        console.log("FAILED TO SEND MESSAGE ", error.message);
+      }
     }
+    setNewMessage("")
   };
 
-  console.log(object)
+
+
+  useEffect(()=>{
+    if(selectedChat){
+      fetchMessageHandler();
+    }
+  },[selectedChat])
+
   return (
     <React.Fragment>
       {selectedChat ? (
@@ -97,14 +110,35 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
             </Container>
           </Container>
 
-          <Container className="chat-box d-flex justify-content-center align-items-center" fluid>
-            {loading ? <Spinner animation="border" variant="info" style={{height:'6rem', width:'6rem'}}></Spinner> : <ScrolableChat></ScrolableChat>}
+          <Container
+            className="chat-box d-flex justify-content-center align-items-center"
+            fluid
+          >
+            {loading ? (
+              <Spinner
+                animation="border"
+                variant="info"
+                style={{ height: "6rem", width: "6rem" }}
+              ></Spinner>
+            ) : (
+              <ScrolableChat messages={messages}></ScrolableChat>
+            )}
           </Container>
 
           <InputGroup>
-              <FormControl onChange={(e)=>{setNewMessage(e.target.value)}} value={newMessage} type="text" className="shadow-none p-2 bg-info-subtle"></FormControl>
-              <InputGroupText className="bg-info text-white px-4 fw-bold"> Send ➤ </InputGroupText>
+            <FormControl
+              onKeyDown={sendMessageHandler}
+              onChange={newMessageHandler}
+              value={newMessage}
+              type="text"
+              className="shadow-none p-2 bg-info-subtle"
+            ></FormControl>
+            <InputGroupText className="bg-info text-white px-4 fw-bold">
+              {" "}
+              Send ➤{" "}
+            </InputGroupText>
           </InputGroup>
+          
         </Container>
       ) : (
         <Container
