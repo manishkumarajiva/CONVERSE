@@ -6,7 +6,7 @@ const ScrolableChat = ({ message }) => {
 
   return (
     <React.Fragment>
-      
+      <p> Scrolable Chat </p>
     </React.Fragment>
   )
 }

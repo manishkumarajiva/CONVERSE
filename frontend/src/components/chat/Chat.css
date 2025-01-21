@@ -15,3 +15,9 @@
 .eye-hover:hover{
     background-color: aqua;
 }
+
+
+.chat-box{
+    background: rgb(242, 240, 243);
+    height: 620px;
+}

@@ -5,15 +5,20 @@ import { ChatState } from "../../context/ChatProvider";
 import { FetchMessages, SendNewMessage } from "./ChatAPI";
 import { getRecipent } from "../../config/ChatLogics";
 import UpdateGroupChatModel from "../../miscellaneous/UpdateGroupChatModel";
+import ScrolableChat from "./ScrolableChat";
+import {FormControl, InputGroup, Spinner} from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import logo from "../../assests/logo.png";
 import "./Chat.css";
+import InputGroupText from "react-bootstrap/esm/InputGroupText";
+
+
 
 const SingleChat = ({ fetchAgain, onFetch }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -51,39 +56,55 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     }
   };
 
+  console.log(object)
   return (
     <React.Fragment>
       {selectedChat ? (
-        <Container className="d-flex justify-content-between" fluid>
-          <Container variant="" className="d-block d-md-none" fluid>
-            <span
-              dir="ltr"
-              onClick={() => setSelectedChat("")}
-              className="bg-info rounded-circle px-1 fs-2 fw-bold text-light"
-              role="button"
+        <Container fluid>
+          <Container className="d-flex justify-content-between" fluid>
+            <Container variant="" className="d-block d-md-none" fluid>
+              <span
+                dir="ltr"
+                onClick={() => setSelectedChat("")}
+                className="bg-info rounded-circle px-1 fs-2 fw-bold text-light"
+                role="button"
+              >
+                {" "}
+                &#8672;{" "}
+              </span>
+            </Container>
+
+            <Container
+              className="text-center fs-5 w-100 text-info fw-bold"
+              fluid
             >
-              {" "}
-              &#8672;{" "}
-            </span>
-          </Container>
-          <Container className="text-center fs-5 w-100 text-info fw-bold" fluid>
-            {selectedChat.isGroupChat
-              ? selectedChat.chatName.toUpperCase()
-              : getRecipent(user, selectedChat.users).name.toUpperCase()}
+              {selectedChat.isGroupChat
+                ? selectedChat.chatName.toUpperCase()
+                : getRecipent(user, selectedChat.users).name.toUpperCase()}
+            </Container>
+
+            <Container className="text-end" fluid>
+              {selectedChat.isGroupChat ? (
+                <UpdateGroupChatModel
+                  fetchAgain={fetchAgain}
+                  onFetch={onFetch}
+                ></UpdateGroupChatModel>
+              ) : (
+                <ProfileModel
+                  user={getRecipent(user, selectedChat.users)}
+                ></ProfileModel>
+              )}
+            </Container>
           </Container>
 
-          <Container className="text-end" fluid>
-            {selectedChat.isGroupChat ? (
-              <UpdateGroupChatModel
-                fetchAgain={fetchAgain}
-                onFetch={onFetch}
-              ></UpdateGroupChatModel>
-            ) : (
-              <ProfileModel
-                user={getRecipent(user, selectedChat.users)}
-              ></ProfileModel>
-            )}
+          <Container className="chat-box d-flex justify-content-center align-items-center" fluid>
+            {loading ? <Spinner animation="border" variant="info" style={{height:'6rem', width:'6rem'}}></Spinner> : <ScrolableChat></ScrolableChat>}
           </Container>
+
+          <InputGroup>
+              <FormControl onChange={(e)=>{setNewMessage(e.target.value)}} value={newMessage} type="text" className="shadow-none p-2 bg-info-subtle"></FormControl>
+              <InputGroupText className="bg-info text-white px-4 fw-bold"> Send ➤ </InputGroupText>
+          </InputGroup>
         </Container>
       ) : (
         <Container
