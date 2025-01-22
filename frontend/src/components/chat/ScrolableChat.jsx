@@ -1,7 +1,7 @@
 import React from "react";
 import { ChatState } from "../../context/ChatProvider";
 import ScrolableFeed from "react-scrollable-feed";
-import { isLastMessage, isSameSender } from "../../config/ChatLogics";
+import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from "../../config/ChatLogics";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { Image } from "react-bootstrap";
@@ -13,23 +13,22 @@ const ScrolableChat = ({ messages }) => {
     <React.Fragment>
       <ScrolableFeed className="p-3">
         {messages.map((message, index) => {
+          console.log(isSameSenderMargin(messages, message, index, user.data._id))
+          console.log(isSameUser(messages, message, index) ? 3 : 10)
           return (
             <div className="my-3">
-              {/* {(isSameSender(messages, message, index, user.data._id) ||
-                isLastMessage(messages, index, user.data._id)) && (
-                <Link title="Default title" id="avatar">
-                  Avatar
-                </Link>
-              )} */}
+              
 
               
-              <span
+              <span className="text-wrap text-break"
                 style={{
                   backgroundColor: `${
                     message.sender._id === user.data._id
                       ? "#18dcff"
                       : "#32ff7e"
                   }`,
+                  marginLeft:`${isSameSenderMargin(messages, message, index, user.data._id)}%`,  
+                  marginTop: `${isSameUser(messages, message, index) ? 3 : 10}px`,
                   padding: "10px 15px",
                   borderRadius: "20px",
                   color:'white'
@@ -45,10 +44,5 @@ const ScrolableChat = ({ messages }) => {
   );
 };
 
-const Link = ({ id, children, title }) => (
-  <OverlayTrigger overlay={<Tooltip id={id}>{title}</Tooltip>}>
-    {children}
-  </OverlayTrigger>
-);
 
 export default ScrolableChat;

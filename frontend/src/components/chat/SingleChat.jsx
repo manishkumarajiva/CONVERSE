@@ -11,6 +11,8 @@ import { Container } from "react-bootstrap";
 import logo from "../../assests/logo.png";
 import "./Chat.css";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
+import { io } from 'socket.io-client'
+const ENDPOINT = 'https://localhost:8000'
 
 const SingleChat = ({ fetchAgain, onFetch }) => {
   const [messages, setMessages] = useState([]);
@@ -69,10 +71,27 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     }
   },[selectedChat])
 
+
+
+  useEffect(()=>{
+    socket = io(ENDPOINT);
+    socket.emit('setup', user.data);
+    socket.on('connected', function(){
+      toast.success("User has been connected")
+    })
+    socket.on('onTyping', function(){
+      setTyping(true)
+    })
+    socket.on('offTyping', function(){
+      setTyping(false)
+    })
+  },[])
+
+
   return (
     <React.Fragment>
       {selectedChat ? (
-        <Container fluid>
+        <Container className="p-0" fluid>
           <Container className="d-flex justify-content-between" fluid>
             <Container variant="" className="d-block d-md-none" fluid>
               <span
@@ -110,13 +129,14 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
           </Container>
 
           <Container
-            className="chat-box d-flex justify-content-center align-items-center"
+            className="chat-box p-0"
             fluid
           >
             {loading ? (
               <Spinner
                 animation="border"
                 variant="info"
+                className="mx-auto"
                 style={{ height: "6rem", width: "6rem" }}
               ></Spinner>
             ) : (
