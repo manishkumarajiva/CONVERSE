@@ -29,7 +29,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     setNewMessage(e.target.value);
   };
 
-  const fetchMessageHandler = async () => {
+  const fetchMessageHandler = async (e) => {
     if (!selectedChat) return;
 
     try {
@@ -45,8 +45,8 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   };
 
   const sendMessageHandler = async (event) => {
-    event.preventDefault()
-    if (event.key === "Enter" && newMessage) {
+    event.preventDefault();
+
       try {
         const payload = {
           chatId: selectedChat,
@@ -58,7 +58,6 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
         toast.error("Failed To Send");
         console.log("FAILED TO SEND MESSAGE ", error.message);
       }
-    }
     setNewMessage("")
   };
 
@@ -127,13 +126,13 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
           <InputGroup>
             <FormControl
-              onKeyDown={sendMessageHandler}
+              type="text"
               onChange={newMessageHandler}
               value={newMessage}
-              type="text"
-              className="shadow-none p-2 bg-info-subtle"
+              placeholder="write message"
+              className="shadow-none bg-info-subtle p-2 border-2 border-top-0 border-start-0 border-info "
             ></FormControl>
-            <InputGroupText className="bg-info text-white px-4 fw-bold">
+            <InputGroupText onClick={sendMessageHandler} className="bg-info text-white px-4 fw-bold">
               {" "}
               Send ➤{" "}
             </InputGroupText>
