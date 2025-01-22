@@ -22,8 +22,8 @@ const SendMessage = asyncHandler(async (req, res) => {
   try {
     var message = await MessageModel.create(newMessage);
 
-    message = await message.populate("sender", "name avatar").execPopulate();
-    message = await message.populate("chat").execPopulate();
+    message = await message.populate("sender", "name avatar")
+    message = await message.populate("chat")
     message = await UserModel.populate(message, {
       path: "chat.users",
       select: "name avatar email",
@@ -48,7 +48,8 @@ const SendMessage = asyncHandler(async (req, res) => {
 // @ Access         Private
 
 const GetAllMessages = asyncHandler(async (req, res) => {
-  const { chatId } = req.params;
+  console.log('okl')
+  const { chatId } = req.query;
 
   try {
     const messages = await MessageModel.find({ chat: chatId })
