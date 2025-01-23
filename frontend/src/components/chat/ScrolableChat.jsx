@@ -17,10 +17,8 @@ const ScrolableChat = ({ messages }) => {
           console.log(isSameUser(messages, message, index) ? 3 : 10)
           return (
             <div className="my-3">
-              
-
-              
-              <span className="text-wrap text-break"
+                     
+              <p className="text-wrap text-break d-inline-block"
                 style={{
                   backgroundColor: `${
                     message.sender._id === user.data._id
@@ -35,7 +33,7 @@ const ScrolableChat = ({ messages }) => {
                 }}
               >
                 {message.content}
-              </span>
+              </p>
             </div>
           );
         })}

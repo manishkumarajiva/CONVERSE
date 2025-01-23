@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const { createServer } = require("http");
+const connectDB = require("./config/DBconnection.js");
+const { Server } = require("socket.io");
 const cors = require('cors');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -9,7 +12,18 @@ const indexRoutes = require('./routes/index.js');
 const notFound = require('./middlewares/notFound.js');
 const errorHandler = require('./middlewares/errorHandler.js');
 
+const PORT = process.env.PORT || 8000;
 const app = express();
+const httpServer = createServer(app);
+
+const io = new Server(httpServer, {
+  pingTimeout : 60000,
+  cors: {
+    origin: "http://localhost:3000", 
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -38,4 +52,38 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+
+
+
+
+
+io.on("connection", function (socket) {
+  console.log("connected");
+
+  socket.on('setup', function(userData){
+    socket.join(userData._id);
+    socket.emit('connected');
+  })
+
+  socket.on('join-room',function(room){
+    socket.join(room);
+    console.log("Room joined")
+  })
+
+  socket.on('new-fessage', function(newMessageRecived){
+    var chat = newMessageRecived.chat;
+    if(!chat.users) return console.log("chat's users not defined");
+
+    chat.users.forEach((user) => {
+      if(user._id === newMEssageRecived.sender._id) return
+
+      socket.in(user._id).emit("message-recived", newMessageRecived)
+    })
+  })
+  socket.on("disconnect", function(){
+    console.log("User Disconnect")
+  })
+});
+
+
+httpServer.listen(PORT, ()=> console.log('Server is Listening...'))

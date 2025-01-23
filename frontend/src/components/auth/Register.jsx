@@ -127,7 +127,7 @@ const Register = () => {
                 className="shadow-none"
                 required
               />
-              <InputGroup.Text onClick={showHandler}>
+              <InputGroup.Text onClick={showHandler} role="button">
                 {" "}
                 {show ? "Hide" : "Show"}{" "}
               </InputGroup.Text>
@@ -146,7 +146,7 @@ const Register = () => {
                 className="shadow-none"
                 required
               />
-              <InputGroup.Text onClick={showHandler}>
+              <InputGroup.Text onClick={showHandler} role="button">
                 {" "}
                 {show ? "Hide" : "Show"}{" "}
               </InputGroup.Text>

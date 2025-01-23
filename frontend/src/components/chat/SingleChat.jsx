@@ -40,6 +40,8 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
       response ? setMessages(response.data) : setMessages([]);
       setLoading(false);
       setMessages(response.data);
+
+      socket.emit('join-room', selectedChat._id)
     } catch (error) {
       toast.error("Failed To Fetch");
       console.log("FAILED TO FETCH MESSAGES ", error.messages);
@@ -69,25 +71,45 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     if(selectedChat){
       fetchMessageHandler();
     }
+    selectedChatCompare = selectedChat;
   },[selectedChat])
 
 
 
   useEffect(()=>{
-    socket = io(ENDPOINT);
-    socket.emit('setup', user.data);
-    socket.on('connected', function(){
-      toast.success("User has been connected")
+    const socket = io(ENDPOINT, {
+      withCredentials: true
+    });
+    
+    socket.on('connect', function(){
+      console.log("connected")
     })
+
+    socket.emit('setup', user.data);
+
+    socket.on('connected', function(){
+      toast.success("User has been connected");
+      setSocketConnected(true)
+    })
+
     socket.on('onTyping', function(){
       setTyping(true)
     })
+    
     socket.on('offTyping', function(){
       setTyping(false)
+    })
+  },[selectedChat])
+
+
+  useEffect(()=>{
+    socket.on('message-received', function(){
+      if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecived.chat._id)
     })
   },[])
 
 
+  
   return (
     <React.Fragment>
       {selectedChat ? (

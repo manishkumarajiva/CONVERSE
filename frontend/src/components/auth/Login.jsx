@@ -77,7 +77,7 @@ const Login = () => {
               placeholder="Password"
               className="shadow-none"
             />
-            <InputGroup.Text onClick={showHandler} id="basic-addon1"> {show ? 'Hide' : 'Show'} </InputGroup.Text>
+            <InputGroup.Text onClick={showHandler} role='button'> {show ? 'Hide' : 'Show'} </InputGroup.Text>
             </InputGroup>
           </Form.Group>
         </Container>
