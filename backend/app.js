@@ -12,15 +12,16 @@ const indexRoutes = require('./routes/index.js');
 const notFound = require('./middlewares/notFound.js');
 const errorHandler = require('./middlewares/errorHandler.js');
 
+
 const PORT = process.env.PORT || 8000;
 const app = express();
 const httpServer = createServer(app);
 
+
 const io = new Server(httpServer, {
-  pingTimeout : 60000,
   cors: {
     origin: "http://localhost:3000", 
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true
   }
 });
@@ -35,6 +36,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'uploads')));
 
+app.use(notFound);
+app.use(errorHandler)
+
 app.get('/', function(req, res){
   res.send('Server is listening ....')
 })
@@ -45,20 +49,10 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-
-
 
 
 
 io.on("connection", function (socket) {
-  console.log("connected");
 
   socket.on('setup', function(userData){
     socket.join(userData._id);
@@ -95,6 +89,8 @@ io.on("connection", function (socket) {
     console.log("User Disconnect")
   })
 });
+
+
 
 
 httpServer.listen(PORT, ()=> console.log('Server is Listening...'))

@@ -48,7 +48,6 @@ const SendMessage = asyncHandler(async (req, res) => {
 // @ Access         Private
 
 const GetAllMessages = asyncHandler(async (req, res) => {
-  console.log('okl')
   const { chatId } = req.query;
 
   try {

@@ -13,10 +13,8 @@ const ScrolableChat = ({ messages }) => {
     <React.Fragment>
       <ScrolableFeed className="p-3">
         {messages.map((message, index) => {
-          console.log(isSameSenderMargin(messages, message, index, user.data._id))
-          console.log(isSameUser(messages, message, index) ? 3 : 10)
           return (
-            <div className="my-3">
+            <div className="my-3" key={index}>
                      
               <p className="text-wrap text-break d-inline-block"
                 style={{

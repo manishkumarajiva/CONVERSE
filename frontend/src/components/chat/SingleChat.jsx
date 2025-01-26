@@ -7,17 +7,20 @@ import { getRecipent } from "../../config/ChatLogics";
 import UpdateGroupChatModel from "../../miscellaneous/UpdateGroupChatModel";
 import ScrolableChat from "./ScrolableChat";
 import { FormControl, InputGroup, Spinner } from "react-bootstrap";
+import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { Container } from "react-bootstrap";
 import logo from "../../assests/logo.png";
 import "./Chat.css";
-import InputGroupText from "react-bootstrap/esm/InputGroupText";
+
+// sockets
 import { io } from 'socket.io-client'
-const ENDPOINT = 'https://localhost:8000'
+const ENDPOINT = 'http://localhost:8000/'
+var socket, selectedChatCompare;
+
 
 const SingleChat = ({ fetchAgain, onFetch }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  let selectedChatCompare;
 
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +45,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
       setLoading(false);
       setMessages(response.data);
 
-      socket.emit('join-room', selectedChat._id)
+      // socket.emit('join-room', selectedChat._id)
     } catch (error) {
       toast.error("Failed To Fetch");
       console.log("FAILED TO FETCH MESSAGES ", error.messages);
@@ -76,20 +79,13 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   },[selectedChat])
 
 
-
+ 
   useEffect(()=>{
-    const socket = io(ENDPOINT, {
-      withCredentials: true
-    });
+    socket = io(ENDPOINT);
     
-    socket.on('connect', function(){
-      console.log("connected")
-    })
-
     socket.emit('setup', user.data);
 
     socket.on('connected', function(){
-      toast.success("User has been connected");
       setSocketConnected(true)
     })
 
@@ -105,8 +101,8 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
   // useEffect(()=>{
   //   socket.on('message-received', function(){
-  //     if(!selectedChat || selectedChat._id !== newMessage.chat._id){
-  //       toast.success('receinved message')
+  //     if(!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id){
+
   //     }
   //   })
   // },[])
