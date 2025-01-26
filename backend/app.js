@@ -70,7 +70,7 @@ io.on("connection", function (socket) {
     console.log("Room joined")
   })
 
-  socket.on('new-fessage', function(newMessageRecived){
+  socket.on('new-message', function(newMessageRecived){
     var chat = newMessageRecived.chat;
     if(!chat.users) return console.log("chat's users not defined");
 
@@ -80,6 +80,17 @@ io.on("connection", function (socket) {
       socket.in(user._id).emit("message-recived", newMessageRecived)
     })
   })
+
+
+  socket.on('typing', (room) => socket.in(room).emit('typing'));
+  socket.on('stop_typing', (room) => socket.in(room).emit('stop_typing'))
+
+
+  socket.off('setup', () => {
+    console.log('USER DISCONNECTED');
+    socket.leave(userData._id);
+  })
+
   socket.on("disconnect", function(){
     console.log("User Disconnect")
   })

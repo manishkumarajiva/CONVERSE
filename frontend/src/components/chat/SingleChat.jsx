@@ -17,6 +17,7 @@ const ENDPOINT = 'https://localhost:8000'
 const SingleChat = ({ fetchAgain, onFetch }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  let selectedChatCompare;
 
   const [loading, setLoading] = useState(false);
 
@@ -102,11 +103,13 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   },[selectedChat])
 
 
-  useEffect(()=>{
-    socket.on('message-received', function(){
-      if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecived.chat._id)
-    })
-  },[])
+  // useEffect(()=>{
+  //   socket.on('message-received', function(){
+  //     if(!selectedChat || selectedChat._id !== newMessage.chat._id){
+  //       toast.success('receinved message')
+  //     }
+  //   })
+  // },[])
 
 
   
