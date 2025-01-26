@@ -45,7 +45,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
       setLoading(false);
       setMessages(response.data);
 
-      // socket.emit('join-room', selectedChat._id)
+      socket.emit('join-room', selectedChat._id)
     } catch (error) {
       toast.error("Failed To Fetch");
       console.log("FAILED TO FETCH MESSAGES ", error.messages);
@@ -62,6 +62,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
         };
         const response = await SendNewMessage(payload);
         setMessages([...messages, response.data]);
+        socket.emit('new-message', response.data)
       } catch (error) {
         toast.error("Failed To Send");
         console.log("FAILED TO SEND MESSAGE ", error.message);
@@ -70,6 +71,16 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   };
 
 
+  const typingHandler = (event) => {
+    setNewMessage(e.target.value)
+
+    if(!socketConnected) return;
+
+    if(typing){
+      setTyping(true);
+      socket.emit('onTyping', selectedChat._id)
+    }
+  }
 
   useEffect(()=>{
     if(selectedChat){
@@ -99,13 +110,15 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   },[selectedChat])
 
 
-  // useEffect(()=>{
-  //   socket.on('message-received', function(){
-  //     if(!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id){
-
-  //     }
-  //   })
-  // },[])
+  useEffect(()=>{
+    socket.on('message-received', function(newMessageRecieved){
+      if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
+        // notification
+      }else{
+        setMessages([...messages, newMessageRecieved])
+      }
+    })
+  },[])
 
 
   
