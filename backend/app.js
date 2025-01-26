@@ -29,7 +29,7 @@ const io = new Server(httpServer, {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(cors('*'));
 app.use(express.urlencoded({ extended: false }));
@@ -61,7 +61,7 @@ io.on("connection", function (socket) {
 
   socket.on('join-room',function(room){
     socket.join(room);
-    console.log("Room joined")
+    console.log("Room joined", room)
   })
 
   socket.on('new-message', function(newMessageRecived){
@@ -69,15 +69,15 @@ io.on("connection", function (socket) {
     if(!chat.users) return console.log("chat's users not defined");
 
     chat.users.forEach((user) => {
-      if(user._id === newMEssageRecived.sender._id) return
+      if(user._id === newMessageRecived.sender._id) return
 
       socket.in(user._id).emit("message-recived", newMessageRecived)
     })
   })
 
 
-  socket.on('typing', (room) => socket.in(room).emit('typing'));
-  socket.on('stop_typing', (room) => socket.in(room).emit('stop_typing'))
+  socket.on('onTyping', (room) => socket.in(room).emit('onTyping'));
+  socket.on('ofTyping', (room) => socket.in(room).emit('offTyping'))
 
 
   socket.off('setup', () => {
