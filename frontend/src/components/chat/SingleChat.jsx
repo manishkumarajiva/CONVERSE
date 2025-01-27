@@ -31,8 +31,8 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   const { user, selectedChat, setSelectedChat, notification, setNotification } =
     ChatState();
 
-  const newMessageHandler = (e) => {
-    setNewMessage(e.target.value);
+  const newMessageHandler = (event) => {
+    setNewMessage(event.target.value);
   };
 
   const fetchMessageHandler = async (e) => {
@@ -43,7 +43,6 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
       const response = await FetchMessages(selectedChat._id);
       response ? setMessages(response.data) : setMessages([]);
       setLoading(false);
-      setMessages(response.data);
 
       socket.emit('join-room', selectedChat._id)
     } catch (error) {
@@ -72,7 +71,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
 
   const typingHandler = (event) => {
-    setNewMessage(e.target.value)
+    setNewMessage(event.target.value)
 
     if(!socketConnected) return;
 
@@ -107,18 +106,20 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     socket.on('offTyping', function(){
       setTyping(false)
     })
+
   },[selectedChat])
 
 
   useEffect(()=>{
     socket.on('message-received', function(newMessageRecieved){
+
       if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
         // notification
       }else{
         setMessages([...messages, newMessageRecieved])
       }
     })
-  },[])
+  })
 
 
   

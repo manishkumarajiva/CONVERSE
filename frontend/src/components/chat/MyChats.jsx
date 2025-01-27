@@ -81,6 +81,7 @@ const MyChats = ({ fetchAgain }) => {
                     <ListGroupItem
                       as={"li"}
                       key={index}
+                      role='button'
                       onClick={() => {
                         setSelectedChat(chat);
                       }}
