@@ -21,9 +21,8 @@ const chatCSS =
   "d-flex flex-sm-wrap flex-md-nowrap border-5 border-start-0 border-top-0 border-end-0  border-info my-1 overflow-y-hidden rounded ";
 
 const MyChats = ({ fetchAgain }) => {
-  const [loggedUser, setLoggedUser] = useState();
   const [show, setShow] = useState(false);
-  const { chats, setChats, selectedChat, setSelectedChat } = ChatState();
+  const { user, chats, setChats, selectedChat, setSelectedChat } = ChatState();
 
   const chatModelHandler = () => setShow(!show);
 
@@ -41,10 +40,10 @@ const MyChats = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
-    setLoggedUser(user.data);
     fetchChats();
   }, [fetchAgain]);
+
+
 
   return (
     <React.Fragment>
@@ -74,9 +73,10 @@ const MyChats = ({ fetchAgain }) => {
               {chats ? (
                 chats.map((chat, index) => {
                   const { name, avatar, email } = getRecipent(
-                    loggedUser.data,
+                    user.data,
                     chat.users
                   );
+
                   return (
                     <ListGroupItem
                       as={"li"}
