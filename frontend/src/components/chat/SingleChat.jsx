@@ -35,6 +35,39 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     setNewMessage(event.target.value);
   };
 
+
+  useEffect(()=>{
+    socket = io(ENDPOINT);
+    
+    socket.emit('setup', user.data);
+
+    socket.on('connected', function(){
+      setSocketConnected(true)
+    })
+
+    socket.on('onTyping', function(){
+      setTyping(true)
+    })
+    
+    socket.on('offTyping', function(){
+      setTyping(false)
+    })
+
+  },[selectedChat])
+
+
+  useEffect(()=>{
+    socket.on('message-received', function(newMessageRecieved){
+      console.log(newMessageRecieved,'poool')
+      if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
+        // notification
+      }else{
+        setMessages([...messages, newMessageRecieved])
+      }
+    })
+  })
+
+
   const fetchMessageHandler = async (e) => {
     if (!selectedChat) return;
 
@@ -61,7 +94,8 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
         };
         const response = await SendNewMessage(payload);
         setMessages([...messages, response.data]);
-        socket.emit('new-message', response.data)
+
+        socket.emit('new-message', response.data) 
       } catch (error) {
         toast.error("Failed To Send");
         console.log("FAILED TO SEND MESSAGE ", error.message);
@@ -90,37 +124,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
 
  
-  useEffect(()=>{
-    socket = io(ENDPOINT);
-    
-    socket.emit('setup', user.data);
-
-    socket.on('connected', function(){
-      setSocketConnected(true)
-    })
-
-    socket.on('onTyping', function(){
-      setTyping(true)
-    })
-    
-    socket.on('offTyping', function(){
-      setTyping(false)
-    })
-
-  },[selectedChat])
-
-
-  useEffect(()=>{
-    socket.on('message-received', function(newMessageRecieved){
-
-      if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
-        // notification
-      }else{
-        setMessages([...messages, newMessageRecieved])
-      }
-    })
-  })
-
+ 
 
   
   return (

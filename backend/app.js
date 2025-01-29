@@ -71,7 +71,7 @@ io.on("connection", function (socket) {
     chat.users.forEach((user) => {
       if(user._id === newMessageRecived.sender._id) return
 
-      socket.in(user._id).emit("message-recived", newMessageRecived)
+      socket.in(user._id).emit("message-received", newMessageRecived)
     })
   })
 
