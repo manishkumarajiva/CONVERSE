@@ -5,10 +5,13 @@ import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from "../
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { Image } from "react-bootstrap";
+import Typing from '../../loader/Typing';
 
-const ScrolableChat = ({ messages }) => {
+
+const ScrolableChat = ({ messages, animation }) => {
   const { user } = ChatState();
 
+  
   return (
     <React.Fragment>
       <ScrolableFeed className="p-3">
@@ -35,6 +38,7 @@ const ScrolableChat = ({ messages }) => {
             </div>
           );
         })}
+        {animation && <Typing/>}
       </ScrolableFeed>
     </React.Fragment>
   );

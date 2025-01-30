@@ -6,17 +6,16 @@ import { FetchMessages, SendNewMessage } from "./ChatAPI";
 import { getRecipent } from "../../config/ChatLogics";
 import UpdateGroupChatModel from "../../miscellaneous/UpdateGroupChatModel";
 import ScrolableChat from "./ScrolableChat";
-import { FormControl, InputGroup, Spinner } from "react-bootstrap";
+import { Form, FormControl, InputGroup, Spinner } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { Container } from "react-bootstrap";
 import logo from "../../assests/logo.png";
 import "./Chat.css";
 
 // sockets
-import { io } from 'socket.io-client'
-const ENDPOINT = 'http://localhost:8000/'
+import { io } from "socket.io-client";
+const ENDPOINT = "http://localhost:8000/";
 var socket, selectedChatCompare;
-
 
 const SingleChat = ({ fetchAgain, onFetch }) => {
   const [messages, setMessages] = useState([]);
@@ -31,42 +30,37 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
   const { user, selectedChat, setSelectedChat, notification, setNotification } =
     ChatState();
 
-  const newMessageHandler = (event) => {
-    setNewMessage(event.target.value);
-  };
-
-
-  useEffect(()=>{
+  useEffect(() => {
     socket = io(ENDPOINT);
-    
-    socket.emit('setup', user.data);
 
-    socket.on('connected', function(){
-      setSocketConnected(true)
-    })
+    socket.emit("setup", user.data);
 
-    socket.on('onTyping', function(){
-      setTyping(true)
-    })
-    
-    socket.on('offTyping', function(){
-      setTyping(false)
-    })
+    socket.on("connected", function () {
+      setSocketConnected(true);
+    });
 
-  },[selectedChat])
+    socket.on("onTyping", function () {
+      setTyping(true);
+    });
 
+    socket.on("offTyping", function () {
+      setTyping(false);
+    });
+  }, [selectedChat]);
 
-  useEffect(()=>{
-    socket.on('message-received', function(newMessageRecieved){
-      console.log(newMessageRecieved,'poool')
-      if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
+  useEffect(() => {
+    socket.on("message-received", function (newMessageRecieved) {
+      console.log(newMessageRecieved, "poool");
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
         // notification
-      }else{
-        setMessages([...messages, newMessageRecieved])
+      } else {
+        setMessages([...messages, newMessageRecieved]);
       }
-    })
-  })
-
+    });
+  });
 
   const fetchMessageHandler = async (e) => {
     if (!selectedChat) return;
@@ -77,54 +71,69 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
       response ? setMessages(response.data) : setMessages([]);
       setLoading(false);
 
-      socket.emit('join-room', selectedChat._id)
+      socket.emit("join-room", selectedChat._id);
     } catch (error) {
       toast.error("Failed To Fetch");
       console.log("FAILED TO FETCH MESSAGES ", error.messages);
     }
   };
 
-  const sendMessageHandler = async (event) => {
-    event.preventDefault();
-
-      try {
-        const payload = {
-          chatId: selectedChat,
-          content: newMessage,
-        };
-        const response = await SendNewMessage(payload);
-        setMessages([...messages, response.data]);
-
-        socket.emit('new-message', response.data) 
-      } catch (error) {
-        toast.error("Failed To Send");
-        console.log("FAILED TO SEND MESSAGE ", error.message);
-      }
-    setNewMessage("")
-  };
-
-
-  const typingHandler = (event) => {
-    setNewMessage(event.target.value)
-
-    if(!socketConnected) return;
-
-    if(typing){
-      setTyping(true);
-      socket.emit('onTyping', selectedChat._id)
-    }
-  }
-
-  useEffect(()=>{
-    if(selectedChat){
+  useEffect(() => {
+    if (selectedChat) {
       fetchMessageHandler();
     }
     selectedChatCompare = selectedChat;
-  },[selectedChat])
+  }, [selectedChat]);
+
+  const newMessageHandler = (event) => {
+    typingHandler()
+    setNewMessage(event.target.value);
+  };
 
 
- 
- 
+  const typingHandler = () => {
+    alert('working')
+    if (!socketConnected) return;
+
+    if(!typing) {
+      setTyping(true);
+      socket.emit("onTyping", selectedChat._id);
+    }
+
+    let lastTypingTime = new Date().getTime();
+    let timerLength = 3000;
+
+    setTimeout(() => {
+      let timeNow = new Date().getTime();
+      let timeDifference = timeNow - lastTypingTime;
+      if (timeDifference >= timerLength && typing) {
+        socket.emit("offTyping", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
+  };
+
+
+  const sendMessageHandler = async (event) => {
+    event.preventDefault();
+
+    setTyping(false)
+
+    try {
+      const payload = {
+        chatId: selectedChat,
+        content: newMessage,
+      };
+      const response = await SendNewMessage(payload);
+      setMessages([...messages, response.data]);
+
+      socket.emit("new-message", response.data);
+    } catch (error) {
+      toast.error("Failed To Send");
+      console.log("FAILED TO SEND MESSAGE ", error.message);
+    }
+    setNewMessage("");
+  };
 
   
   return (
@@ -154,7 +163,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
             </Container>
 
             {/* Dialog Models for group of specific chat */}
-            <Container className="text-end" fluid> 
+            <Container className="text-end" fluid>
               {selectedChat.isGroupChat ? (
                 <UpdateGroupChatModel
                   fetchAgain={fetchAgain}
@@ -168,10 +177,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
             </Container>
           </Container>
 
-          <Container
-            className="chat-box p-0"
-            fluid
-          >
+          <Container className="chat-box p-0" fluid>
             {loading ? (
               <Spinner
                 animation="border"
@@ -180,24 +186,28 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
                 style={{ height: "6rem", width: "6rem" }}
               ></Spinner>
             ) : (
-              <ScrolableChat messages={messages}></ScrolableChat>
+              <ScrolableChat messages={messages} animation={typing}></ScrolableChat>
             )}
           </Container>
 
-          <InputGroup>
-            <FormControl
-              type="text"
-              onChange={newMessageHandler}
-              value={newMessage}
-              placeholder="write message"
-              className="shadow-none bg-info-subtle p-2 border-2 border-top-0 border-start-0 border-info "
-            ></FormControl>
-            <InputGroupText onClick={sendMessageHandler} className="bg-info text-white px-4 fw-bold">
-              {" "}
-              Send ➤{" "}
-            </InputGroupText>
-          </InputGroup>
-          
+          <Form>
+            <InputGroup>
+              <FormControl
+                type="text"
+                onChange={newMessageHandler}
+                value={newMessage}
+                placeholder="write message"
+                className="shadow-none bg-info-subtle p-2 border-2 border-top-0 border-start-0 border-info "
+              ></FormControl>
+              <InputGroupText
+                onClick={sendMessageHandler}
+                className="bg-info text-white px-4 fw-bold"
+              >
+                {" "}
+                Send ➤{" "}
+              </InputGroupText>
+            </InputGroup>
+          </Form>
         </Container>
       ) : (
         <Container
