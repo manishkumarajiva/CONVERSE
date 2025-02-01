@@ -50,7 +50,6 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
   useEffect(() => {
     socket.on("message-received", function (newMessageRecieved) {
-      console.log(newMessageRecieved, "poool");
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
@@ -92,7 +91,6 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
 
   const typingHandler = () => {
-    alert('working')
     if (!socketConnected) return;
 
     if(!typing) {

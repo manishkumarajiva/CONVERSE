@@ -77,7 +77,7 @@ io.on("connection", function (socket) {
 
 
   socket.on('onTyping', (room) => socket.in(room).emit('onTyping'));
-  socket.on('ofTyping', (room) => socket.in(room).emit('offTyping'))
+  socket.on('offTyping', (room) => socket.in(room).emit('offTyping'))
 
 
   socket.off('setup', () => {
