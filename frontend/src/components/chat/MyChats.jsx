@@ -22,7 +22,7 @@ const chatCSS =
 
 const MyChats = ({ fetchAgain }) => {
   const [show, setShow] = useState(false);
-  const { user, chats, setChats, selectedChat, setSelectedChat } = ChatState();
+  const { user, chats, setChats, selectedChat, setSelectedChat, setNotification } = ChatState();
 
   const chatModelHandler = () => setShow(!show);
 
@@ -84,6 +84,7 @@ const MyChats = ({ fetchAgain }) => {
                       role='button'
                       onClick={() => {
                         setSelectedChat(chat);
+                        setNotification([])
                       }}
                       className={`${chatCSS}  ${
                         chat._id === selectedChat._id
