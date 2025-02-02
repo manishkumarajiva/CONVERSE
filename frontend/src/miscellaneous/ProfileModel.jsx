@@ -25,7 +25,7 @@ const ProfileModel = ({ user, children }) => {
         animation={true}
       >
         <Modal.Header className="bg-info" closeButton>
-          <Modal.Title className="text-white"> {user.name.toUpperCase()} </Modal.Title>
+          <Modal.Title className="text-white"> {user?.name.toUpperCase()} </Modal.Title>
         </Modal.Header>
 
         <Modal.Body className="p-0">
@@ -38,10 +38,10 @@ const ProfileModel = ({ user, children }) => {
               className="border-bottom border-info border-5"
             />
 
-            <Badge pill bg='info' className="mt-2 py-2 text-center w-50 mx-auto d-block"> {user.email} </Badge>
+            <Badge pill bg='info' className="mt-2 py-2 text-center w-50 mx-auto d-block"> {user?.email} </Badge>
             <p>
               {" "}
-              Hi i am {user.name} User of CONVERSE since {new Date(user.createdAt).toLocaleDateString()}{" "}
+              Hi i am {user?.name} User of CONVERSE since {new Date(user?.createdAt).toLocaleDateString()}{" "}
             </p>
           </Container>
         </Modal.Body>

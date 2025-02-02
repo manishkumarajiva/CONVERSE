@@ -81,12 +81,10 @@ io.on("connection", function (socket) {
 
 
   socket.off('setup', () => {
-    console.log('USER DISCONNECTED');
     socket.leave(userData._id);
   })
 
   socket.on("disconnect", function(){
-    console.log("User Disconnect")
   })
 });
 

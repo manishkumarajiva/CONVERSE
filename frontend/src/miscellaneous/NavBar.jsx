@@ -78,7 +78,7 @@ const NavBar = () => {
                       className="rounded-circle"
                       height="60px"
                       src={
-                        user.data
+                        user?.data
                           ? "http://localhost:8000/" + user.data.avatar
                           : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxw0eitGgbS6Y3kJODK5lGbWxUV8sONkQUZg&s"
                       }

@@ -25,7 +25,6 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
 
   const { user, selectedChat, setSelectedChat, notification, setNotification } =
     ChatState();
@@ -46,7 +45,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
     socket.on("offTyping", function () {
       setTyping(false);
     });
-  }, [selectedChat]);
+  }, [selectedChat, user.data]);
 
   useEffect(() => {
     socket.on("message-received", function (newMessageRecieved) {
@@ -203,6 +202,7 @@ const SingleChat = ({ fetchAgain, onFetch }) => {
                 className="shadow-none bg-info-subtle p-2 border-2 border-top-0 border-start-0 border-info "
               ></FormControl>
               <InputGroupText
+                role="button"
                 onClick={sendMessageHandler}
                 className="bg-info text-white px-4 fw-bold"
               >
