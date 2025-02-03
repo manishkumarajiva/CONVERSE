@@ -50,7 +50,7 @@ const MyChats = ({ fetchAgain }) => {
       <GroupChatModel show={show} handleShow={setShow}></GroupChatModel>
       <Container
         className={` bg-light rounded ${selectedChat ? 'd-sm-none' : 'd-sm-block' } d-md-block`}
-        style={{ height: "800px" }}
+        style={{ height: "700px" }}
         fluid
       >
         <Stack direction="vertical">
